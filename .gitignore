@@ -1,0 +1,14 @@
+# Python-related files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+.env
+
+# Stuff
+
+info.txt
+additional-things-to-do.txt

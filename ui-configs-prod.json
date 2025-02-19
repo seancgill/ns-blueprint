@@ -1,0 +1,389 @@
+[
+  {
+    "config_name": "MOBILE_REGISTRATION_SERVER",
+    "config_value": "_sip._tls.custID-core-031-mci.custID.ucaas.run:5061"
+  },
+  {
+    "config_name": "PORTAL_FQDN",
+    "config_value": "custID.trynetsapiens.com"
+  },
+  {
+    "config_name": "PORTAL_CALLHISTORY_FILTERS_SITE",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_CALL_QUEUE_USE_SITE",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_WEBPHONE_ENABLE_PWA",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_WEBPHONE_PWA_NAME",
+    "config_value": "custID_PWA"
+  },
+  {
+    "config_name": "PORTAL_WEBPHONE_PWA_SHORT_NAME",
+    "config_value": "custID_PWA"
+  },
+  {
+    "config_name": "PORTAL_WEBPHONE_PWA_DESCRIPTION",
+    "config_value": "custID UC"
+  },
+  {
+    "config_name": "PORTAL_USERS_SHOW_ENHANCED",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_MENU_SHOW_CALL_CENTER_AGENT",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_MENU_SHOW_CALL_CENTER_AGENT_SUPERVISOR",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_USERS_ALLOW_RECORDING",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_DEVICE_ALLOW_RECORDING",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_CALL_QUEUE_ALLOW_RECORDING",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_DOMAINS_NDP_SERVER_SELECT",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_CALL_QUEUE_AGENTS_BY_USER",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_CALL_QUEUE_AGENT_MESSAGE",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_ALLOW_SCOPE_SELECT_RESELLER",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_ENABLE_SITE_MANAGER",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_SHOW_DEVICE_DEFAULTS_SITE",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_SITES_EMERGENCY_NOTIFICATIONS",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_EMERGENCY_NOTIFICATION_SHOW_CALL",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_EMERGENCY_NOTIFICATION_SHOW_EMAIL",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_EMERGENCY_NOTIFICATION_MESSAGE",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_EMERGENCY_NOTIFICATION_SHOW_MESSAGE",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_USERS_RINGGROUP",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_ATTENDANT_OPTIONS_SHOW_DTMF_TIMERS",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_ATTENDANT_OPTIONS_SHOW_DTMF_COUNT",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_CALL_QUEUE_GRANULAR_LOGIN",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_USERS_SHOW_OPERATOR_FORWARD",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_USERS_SORT_EXTENSION",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_USERS_VMAIL_SHOW_EMAIL",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_CSS_COLOR_MENU_BAR",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_CHAT_SMS",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_CALLHISTORY_FILTERS_EXT_TO_EXT",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_CALLHISTORY_FILTERS_OFFNET",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_CALLHISTORY_MAX_RANGE_DAYS",
+    "config_value": "90"
+  },
+  {
+    "config_name": "PORTAL_CALL_HISTORY_EXPORT_DISP_REASON_NOTES",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_CALL_HISTORY_EXPORT_PAC",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_CALL_HISTORY_EXPORT_RELEASE_REASON",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_AUTO_ATTENDANT_SHOW_INTRO",
+    "config_value": "no"
+  },
+  {
+    "config_name": "PORTAL_CALL_HISTORY_SHOW_RELEASE_REASON",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_CALL_HISTORY_SHOW_TRACE_OMP",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_INVENTORY_ALLOW_PSTN",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_INVENTORY_ALLOW_SIP_TRUNKS",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_ALLOW_SCOPE_SELECT_ADVANCED_USER",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_ALLOW_SCOPE_SELECT_SIMPLE_USER",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "MOBILE_IOS_MULTIMEDIA_CHAT_ENABLED",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "MOBILE_ANDROID_MULTIMEDIA_CHAT_ENABLED",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_DOMAINS_EMERGENCY_TAB",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "MOBILE_ANDROID_GROUP_CHAT_ENABLED",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "MOBILE_IOS_GROUP_CHAT_ENABLED",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_USERS_IGNORE_LIST",
+    "config_value": ""
+  },
+  {
+    "config_name": "PORTAL_ALLOW_AUDIO_MONITOR",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_ALLOW_AUDIO_MONITOR_ON_AGENTS",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_ALLOW_AUDIO_MONITOR_ON_QUEUES",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_CALL_QUEUE_RINGBACK_OR_MOH",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_EMERGENCY_NOTIFICATION_DIAL_NUMBERS",
+    "config_value": "911,933"
+  },
+  {
+    "config_name": "PORTAL_EMERGENCY_NOTIFICATION_SHOW_CALL",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_EMERGENCY_NOTIFICATION_SHOW_MESSAGE",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_EMERGENCY_NOTIFICATION_SHOW_EMAIL",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_EMERGENCY_NOTIFICATION_MESSAGE",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_PHONES_SHOW_911ID",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_DOMAINS_ALLOW_EDIT_911ID",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_USERS_IGNORE_LIST",
+    "config_value": "",
+    "scope": "su"
+  },
+  {
+    "config_name": "PORTAL_USERS_DIR_MATCH_FIRSTNAME",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_LOGGED_IN_POWERED_BY",
+    "config_value": ""
+  },
+  {
+    "config_name": "MOBILE_IOS_CALL_CENTER_ENABLED",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "MOBILE_ANDROID_CALL_CENTER_ENABLED",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_BUILDER_VIEW_CONFIG_FILES_ENABLED",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_DOMAINS_RECORDING_QUOTA",
+    "config_value": "yes",
+    "scope": "su"
+  },
+  {
+    "config_name": "PORTAL_DOMAINS_RECORDING_QUOTA_AGELIMIT",
+    "config_value": "yes",
+    "scope": "su"
+  },
+  {
+    "config_name": "PORTAL_DOMAINS_RECORDING_QUOTA_COUNTLIMIT",
+    "config_value": "yes",
+    "scope": "su"
+  },
+  {
+    "config_name": "PORTAL_DOMAINS_RECORDING_QUOTA_SIZELIMIT",
+    "config_value": "yes",
+    "scope": "su"
+  },
+  {
+    "config_name": "PORTAL_DOMAINS_RECORDING_QUOTA_TIMELIMIT",
+    "config_value": "yes",
+    "scope": "su"
+  },
+  {
+    "config_name": "PORTAL_DOMAINS_SHOW_RESI",
+    "config_value": "no"
+  },
+  {
+    "config_name": "PORTAL_SIP_TRUNKS_SHOW_FAILOVER",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_SITES_MASTER",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_USERS_ALLOW_EDIT_AREA_CODE",
+    "config_value": "no"
+  },
+  {
+    "config_name": "PORTAL_USERS_ALLOW_EDIT_AREA_CODE_ON_ADD",
+    "config_value": "no"
+  },
+  {
+    "config_name": "MOBILE_REVERSE_NAME_DISPLAY_ORDER",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_USERS_SECURE_PASSWORD_MIN_LENGTH",
+    "config_value": "8"
+  },
+  {
+    "config_name": "PORTAL_USERS_SECURE_PASSWORD_MIN_CAPITAL_LETTER_COUNT",
+    "config_value": "1"
+  },
+  {
+    "config_name": "PORTAL_USERS_SECURE_PASSWORD_MIN_NUMBER_COUNT",
+    "config_value": "1"
+  },
+  {
+    "config_name": "PORTAL_USERS_SECURE_PASSWORD_MIN_SPECIAL_CHAR_COUNT",
+    "config_value": "0"
+  },
+  {
+    "config_name": "PORTAL_USERS_SECURE_PASSWORD_STRONG",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_USER_SECURE_PASSWORD_EXTENSION_FORBID_LIST",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_USER_SECURE_PASSWORD_EXTENSION_FORBID_LIST",
+    "config_value": "0000,1111,2222,3333,4444,5555,6666,7777,8888,9999,1234,4321,5678,8765,00000,11111,22222,33333,44444,55555,66666,77777,88888,99999,123456,654321,987654,000000,111111,222222,333333,444444,555555,666666,777777,888888,999999,1234567,7654321,12345678,87654321,00000000,11111111,22222222,33333333,44444444,55555555,66666666,77777777,88888888,99999999"
+  },
+  {
+    "config_name": "PORTAL_USERS_PIN_STRONG",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_USER_PIN_FORBID_LIST",
+    "config_value": "0000,1111,2222,3333,4444,5555,6666,7777,8888,9999,1234,4321,5678,8765,00000,11111,22222,33333,44444,55555,66666,77777,88888,99999,123456,654321,987654,000000,111111,222222,333333,444444,555555,666666,777777,888888,999999,1234567,7654321,12345678,87654321,00000000,11111111,22222222,33333333,44444444,55555555,66666666,77777777,88888888,99999999"
+  },
+  {
+    "config_name": "PORTAL_USERS_MIN_PASSWORD_LENGTH",
+    "config_value": "4"
+  },
+  {
+    "config_name": "PORTAL_FOOTER_HIDE_HOSTNAME",
+    "config_value": "yes",
+    "scope": "su"
+  },
+  {
+    "config_name": "PORTAL_USERS_SHOW_VMAIL_COPY_TO",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "MOBILE_REVERSE_NAME_DISPLAY_ORDER",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "MOBILE_REVERSE_NAME_DISPLAY_ORDER",
+    "config_value": "yes"
+  }
+]
