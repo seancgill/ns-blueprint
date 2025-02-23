@@ -1,16 +1,53 @@
 import requests
 import json
 import os
+import re
 from dotenv import load_dotenv
 
 # Load variables from the .env file into the environment
-load_dotenv()
+load_dotenv(override=True)
 
 # Retrieve the API token
 API_TOKEN = os.getenv("API_TOKEN")
+print(f"Loaded API_TOKEN: {API_TOKEN}")
 
-def create_user(custID, domain, extension, first_name, last_name, email):
-    url = f"https://{custID}.trynetsapiens.com/ns-api/v2/domains/{custID}/users"
+def validate_extension(extension):
+    """Check if extension is numeric."""
+    if not extension.isdigit():
+        raise ValueError("Extension must be numeric (e.g., 1001).")
+    return extension
+
+def validate_email(email):
+    """Basic email format validation."""
+    email_pattern = re.compile(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
+    if not email_pattern.match(email):
+        raise ValueError("Invalid email format (e.g., user@domain.com).")
+    return email
+
+def validate_name(name, field_name):
+    """Check if name is non-empty."""
+    if not name:
+        raise ValueError(f"{field_name} cannot be empty.")
+    return name
+
+def create_user(custID, domain):
+    """
+    Create a user in the NetSapiens API with input validation.
+    Args:
+        custID (str): Customer ID (e.g., 'sgdemo')
+        domain (str): Domain name (e.g., 'sgdemo')
+    """
+    while True:
+        try:
+            extension = validate_extension(input("Enter the user extension (ID): ").strip())
+            first_name = validate_name(input("Enter the first name: ").strip(), "First name")
+            last_name = validate_name(input("Enter the last name: ").strip(), "Last name")
+            email = validate_email(input("Enter the email address: ").strip())
+            break  # Exit loop if all inputs are valid
+        except ValueError as e:
+            print(f"Error: {e}. Please try again.")
+
+    url = f"https://{custID}.trynetsapiens.com/ns-api/v2/domains/{domain}/users"
     headers = {
         'accept': 'application/json',
         'content-type': 'application/json',
@@ -18,7 +55,7 @@ def create_user(custID, domain, extension, first_name, last_name, email):
     }
     data = {
         "synchronous": "no",
-        "user-scope": "Basic User",
+        "user-scope": "Super User",
         "privacy": "no",
         "voicemail-user-control-enabled": "yes",
         "phone-numbers-to-allow-enabled": "yes",
@@ -51,7 +88,7 @@ def create_user(custID, domain, extension, first_name, last_name, email):
         "time-zone": "America/New_York",
         "voicemail-login-pin": 1818,
         "dial-plan": domain,
-        "dial-policy": "US & Canada",
+        "dial-policy": "US and Canada",
         "status-message": "my status message",
         "directory-name-number-dtmf-mapping": 564,
         "ring-no-answer-timeout-seconds": 30,
@@ -62,20 +99,18 @@ def create_user(custID, domain, extension, first_name, last_name, email):
         "caller-id-name": f"{first_name} {last_name}"
     }
     
+    print(f"Calling API URL: {url}")
+    print(f"Request payload: {json.dumps(data, indent=2)}")  # Add this line
     response = requests.post(url, headers=headers, data=json.dumps(data))
     
+    print(f"Status Code: {response.status_code}")
     if response.status_code in [200, 201, 202]:
-        print("Domain created successfully")
+        print(f"User {first_name} {last_name} (Ext: {extension}) created successfully")
     else:
-        print(f"Failed to create domain: {response.status_code}")
-    print(response.text)
+        print(f"Failed to create user: {response.status_code}")
+        print(response.text)
 
 if __name__ == "__main__":
     custID = input("Enter the customer domain (e.g., sgdemo): ").strip()
-    domain = input("Enter the customer domain (e.g., sgdemo): ").strip()
-    extension = input("Enter the user extension (ID): ").strip()
-    first_name = input("Enter the first name: ").strip()
-    last_name = input("Enter the last name: ").strip()
-    email = input("Enter the email address: ").strip()
-    
-    create_user(custID, domain, extension, first_name, last_name, email)
+    domain = input("Enter the domain name (e.g., sgdemo): ").strip()
+    create_user(custID, domain)

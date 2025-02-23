@@ -21,7 +21,7 @@ SCOPE_MAPPING = {
 }
 
 # List of UI configurations that require user input
-UI_CONFIGS_TO_PROMPT = {
+UI_CONFIG_PROMPT_COLOR_HEX = {
     "PORTAL_CSS_PRIMARY_1": "Dark Blue",
     "PORTAL_CSS_PRIMARY_2": "Green",
     "PORTAL_CSS_COLOR_MENU_BAR_PRIMARY_1": "Gray",
@@ -33,7 +33,8 @@ UI_CONFIGS_TO_PROMPT = {
 
 YES_NO_CONFIGS = [
     "PORTAL_USERS_DIR_MATCH_FIRSTNAME",
-    "PORTAL_THREE_WAY_CALL_DISCONNECT_OTHERS_ON_END"
+    "PORTAL_THREE_WAY_CALL_DISCONNECT_OTHERS_ON_END",
+    "PORTAL_USERS_CALLERID_USE_DROPDOWN_DID_LIST"
 ]
 
 NUMERIC_CONFIGS = {
@@ -79,9 +80,19 @@ def load_configurations(filename, customer_name):
             config["config_value"] = config["config_value"].replace("custID", customer_name)
     return configs
 
-def is_valid_hex(color):
-    """Check if input is a valid hex color code."""
-    return bool(re.fullmatch(r"^#([A-Fa-f0-9]{6})$", color))
+def prompt_for_color(config_name, current_value, default_value):
+    """Prompt user for a hex color value."""
+    while True:
+        new_value = input(f"Enter a hex color code for {config_name} (e.g., #123abc) [Current: {current_value} | Default: {default_value}]: ").strip()
+        if new_value == "":  # Use default if input is empty
+            return default_value
+        
+        # Inline hex validation
+        if re.fullmatch(r"^#([A-Fa-f0-9]{6})$", new_value):
+            return new_value
+        
+        print("Invalid hex color. Please enter a valid hex code (e.g., #123abc).")
+
 
 def prompt_for_yes_no(config_name, current_value):
     """Prompt user for a yes/no value."""
@@ -128,8 +139,8 @@ def update_configurations(customer_name, config_file="ui-configs.json"):
         config_name = config["config_name"]
         current_value = config["config_value"]
         
-        if config_name in UI_CONFIGS_TO_PROMPT:
-            config["config_value"] = prompt_for_color(config_name, current_value, UI_CONFIGS_TO_PROMPT[config_name])
+        if config_name in UI_CONFIG_PROMPT_COLOR_HEX:
+            config["config_value"] = prompt_for_color(config_name, current_value, UI_CONFIG_PROMPT_COLOR_HEX[config_name])
         elif config_name in YES_NO_CONFIGS:
             config["config_value"] = prompt_for_yes_no(config_name, current_value)
         elif config_name in NUMERIC_CONFIGS:

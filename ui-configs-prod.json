@@ -96,10 +96,6 @@
     "config_value": "yes"
   },
   {
-    "config_name": "PORTAL_EMERGENCY_NOTIFICATION_SHOW_MESSAGE",
-    "config_value": "yes"
-  },
-  {
     "config_name": "PORTAL_USERS_RINGGROUP",
     "config_value": "yes"
   },
@@ -206,10 +202,6 @@
   {
     "config_name": "MOBILE_IOS_GROUP_CHAT_ENABLED",
     "config_value": "yes"
-  },
-  {
-    "config_name": "PORTAL_USERS_IGNORE_LIST",
-    "config_value": ""
   },
   {
     "config_name": "PORTAL_ALLOW_AUDIO_MONITOR",
@@ -379,11 +371,27 @@
     "config_value": "yes"
   },
   {
-    "config_name": "MOBILE_REVERSE_NAME_DISPLAY_ORDER",
+    "config_name": "PORTAL_DOMAINS_SHOW_EMAIL_SENDER",
+    "config_value": "no"
+  },
+  {
+    "config_name": "PORTAL_MMS_GROUP_MESSAGING_SUPPORTED_CARRIERS",
+    "config_value": "bandwidth,inteliquent,brightlink"
+  },
+  {
+    "config_name": "PORTAL_THREE_WAY_CALL_DISCONNECT_OTHERS_ON_END",
+    "config_value": "no"
+  },
+  {
+    "config_name": "PORTAL_USERS_CALLERID_USE_DROPDOWN_DID_LIST",
+    "config_value": "no"
+  },
+  {
+    "config_name": "PORTAL_ANALYTICS_FEATURE_ENABLED",
     "config_value": "yes"
   },
   {
-    "config_name": "MOBILE_REVERSE_NAME_DISPLAY_ORDER",
+    "config_name": "ANALYTICS_ENABLE_AGENTS_ACCESS",
     "config_value": "yes"
   }
 ]

@@ -9,6 +9,8 @@ load_dotenv()
 # Retrieve the API token
 API_TOKEN = os.getenv("API_TOKEN")
 
+print(API_TOKEN)
+
 
 def create_reseller(domain, reseller_name, description):
     url = f"https://{domain}.trynetsapiens.com/ns-api/v2/resellers"

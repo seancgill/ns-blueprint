@@ -4,12 +4,14 @@ from create_image import process_images
 from ui_configs import update_configurations
 from connections import create_connection, create_second_connection, create_outbound_connection
 from create_user import create_user
-#from create_image_orig import process_images
+from create_device import create_device  # Import the new module
 
 if __name__ == "__main__":
     cust_id = input("Enter the host ID: ")
+    domain = input("Enter the domain name: ")
     
     custID = f"{cust_id}"
+    domain = f"{domain}"
     reseller = f"{cust_id}_reseller"
     description = "Created via API app"
     dial_plan = cust_id
@@ -18,18 +20,25 @@ if __name__ == "__main__":
     caller_id_name = f"{cust_id} CID"
     caller_id_number = 18005551234
     caller_id_number_emergency = 18005551234
-    
 
     create_reseller(custID, reseller, description)
-    #update_custID_user(custID)
-    # Prompt user for image URL
     image_url = input("Enter the image URL (or 'n' to skip): ")
     if image_url.lower() != "n":
         process_images(image_url, custID)
     update_configurations(custID)
     create_connection(custID)
     create_second_connection(custID)
-    #create_outbound_connection(custID)
-    create_domain(custID, 'letsrev', custID , 'made via api', 'letsrev', 'US and Canada', '858', 'letsrev', '8582834172', '8582834172')
-    #create_domain(custID, 'letsrev', description, dial_plan, dial_policy, area_code, caller_id_name, caller_id_number, caller_id_number_emergency)
-    create_user(custID, 'letsrev', '1001', 'Michael', 'Cheatwood', 'michael.cheatwood@letsrev.com')
+    create_outbound_connection(custID)
+    create_domain(custID, domain, custID, 'made via api', domain, 'US and Canada', '858', 'NSEval', '8582834172', '8582834172')
+    
+    # Loop to create multiple users and devices
+    while True:
+        print("\n=== Creating a new user ===")
+        create_user(custID, domain)
+        print("\n=== Creating device for the user ===")
+        extension = input("Enter the extension for the device (same as user): ").strip()
+        create_device(custID, domain, extension)
+        continue_prompt = input("Would you like to create another user? (y/n): ").strip().lower()
+        if continue_prompt != 'y':
+            print("Done creating users and devices.")
+            break
