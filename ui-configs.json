@@ -156,12 +156,44 @@
     "config_value": "#001a9b"
   },
   {
-    "config_name": "PORTAL_CSS_PRIMARY_2",
-    "config_value": "#18a34a"
+    "config_name": "PORTAL_CSS_PRIMARY_1",
+    "config_value": "#001345",
+    "scope": "res",
+    "reseller": "training_reseller1"
+  },
+  {
+    "config_name": "PORTAL_CSS_PRIMARY_1",
+    "config_value": "#0013fgg",
+    "scope": "res",
+    "reseller": "training_reseller2"
   },
   {
     "config_name": "PORTAL_CSS_COLOR_MENU_BAR",
     "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_CSS_COLOR_MENU_BAR_PRIMARY_1",
+    "config_value": "#808080"
+  },
+  {
+    "config_name": "PORTAL_CSS_COLOR_MENU_BAR_PRIMARY_2",
+    "config_value": "#001a9b"
+  },
+  {
+    "config_name": "PORTAL_WEBPHONE_PWA_BACKGROUND_COLOR",
+    "config_value": "#808080"
+  },
+  {
+    "config_name": "PORTAL_WEBPHONE_PWA_THEME_COLOR",
+    "config_value": "#18a34a"
+  },
+  {
+    "config_name": "PORTAL_THEME_ACCENT",
+    "config_value": "#18a34a"
+  },
+  {
+    "config_name": "PORTAL_THEME_PRIMARY",
+    "config_value": "#808080"
   },
   {
     "config_name": "PORTAL_CSS_COLOR_MENU_BAR_PRIMARY_1",
@@ -250,6 +282,10 @@
   {
     "config_name": "MOBILE_ANDROID_MULTIMEDIA_CHAT_ENABLED",
     "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_MMS_GROUP_MESSAGING_SUPPORTED_CARRIERS",
+    "config_value": "bandwidth,inteliquent,brightlink"
   },
   {
     "config_name": "PORTAL_DOMAINS_EMERGENCY_TAB",
@@ -435,15 +471,185 @@
     "config_value": "no"
   },
   {
-    "config_name": "ANALYTICS_ENABLE_AGENTS_ACCESS",
-    "config_value": "yes"
-  },
-  {
     "config_name": "PORTAL_ANALYTICS_FEATURE_ENABLED",
     "config_value": "yes"
   },
   {
     "config_name": "ANALYTICS_ENABLE_AGENTS_ACCESS",
     "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_ANSWERRULES_AUDIO_CONFIRMATION_OPTIONS",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_USERS_ALLOW_PASSWORD_CHANGE_ON_RESET",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_SHOW_DEVICE_DEFAULTS_DOMAIN",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_USERS_ALLOW_VIEW_AREA_CODE",
+    "config_value": "no"
+  },
+  {
+    "config_name": "PORTAL_USERS_ALLOW_PASSWORD_CHANGE_ON_EDIT",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_USERS_ALLOW_PASSWORD_CHANGE",
+    "config_value": "yes",
+    "scope": "su"
+  },
+  {
+    "config_name": "PORTAL_SHOW_DOMAIN_BLOCKED_NUMBERS_MODAL",
+    "config_value": "yes",
+    "scope": "su"
+  },
+  {
+    "config_name": "PORTAL_SHOW_DOMAIN_BLOCKED_NUMBERS",
+    "config_value": "yes",
+    "scope": "su"
+  },
+  {
+    "config_name": "MOBILE_ANDROID_RECORD_ALLOW",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "MOBILE_IOS_RECORD_ALLOW",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_ASSUME_IDENTITY",
+    "config_value": "yes",
+    "scope": "su,res"
+  },
+  {
+    "config_name": "PORTAL_CSS_PRIMARY_2",
+    "config_value": "#4A90E2",
+    "scope": "res",
+    "reseller": "training_reseller1"
+  },
+  {
+    "config_name": "PORTAL_CSS_COLOR_MENU_BAR_PRIMARY_1",
+    "config_value": "#27AE60",
+    "scope": "res",
+    "reseller": "training_reseller1"
+  },
+  {
+    "config_name": "PORTAL_CSS_COLOR_MENU_BAR_PRIMARY_2",
+    "config_value": "#F39C12",
+    "scope": "res",
+    "reseller": "training_reseller1"
+  },
+  {
+    "config_name": "PORTAL_WEBPHONE_PWA_BACKGROUND_COLOR",
+    "config_value": "#8E44AD",
+    "scope": "res",
+    "reseller": "training_reseller1"
+  },
+  {
+    "config_name": "PORTAL_WEBPHONE_PWA_THEME_COLOR",
+    "config_value": "#E74C3C",
+    "scope": "res",
+    "reseller": "training_reseller1"
+  },
+  {
+    "config_name": "PORTAL_THEME_ACCENT",
+    "config_value": "#3498DB",
+    "scope": "res",
+    "reseller": "training_reseller1"
+  },
+  {
+    "config_name": "PORTAL_THEME_PRIMARY",
+    "config_value": "#2ECC71",
+    "scope": "res",
+    "reseller": "training_reseller1"
+  },
+  {
+    "config_name": "PORTAL_CSS_PRIMARY_2",
+    "config_value": "#E91E63",
+    "scope": "res",
+    "reseller": "training_reseller2"
+  },
+  {
+    "config_name": "PORTAL_CSS_COLOR_MENU_BAR_PRIMARY_1",
+    "config_value": "#9B59B6",
+    "scope": "res",
+    "reseller": "training_reseller2"
+  },
+  {
+    "config_name": "PORTAL_CSS_COLOR_MENU_BAR_PRIMARY_2",
+    "config_value": "#1ABC9C",
+    "scope": "res",
+    "reseller": "training_reseller2"
+  },
+  {
+    "config_name": "PORTAL_WEBPHONE_PWA_BACKGROUND_COLOR",
+    "config_value": "#F1C40F",
+    "scope": "res",
+    "reseller": "training_reseller2"
+  },
+  {
+    "config_name": "PORTAL_WEBPHONE_PWA_THEME_COLOR",
+    "config_value": "#34495E",
+    "scope": "res",
+    "reseller": "training_reseller2"
+  },
+  {
+    "config_name": "PORTAL_THEME_ACCENT",
+    "config_value": "#D35400",
+    "scope": "res",
+    "reseller": "training_reseller2"
+  },
+  {
+    "config_name": "PORTAL_THEME_PRIMARY",
+    "config_value": "#16A085",
+    "scope": "res",
+    "reseller": "training_reseller2"
+  },
+  {
+    "config_name": "PORTAL_CSS_PRIMARY_2",
+    "config_value": "#4A90E2",
+    "scope": "res",
+    "reseller": "training_reseller1"
+  },
+  {
+    "config_name": "PORTAL_CSS_COLOR_MENU_BAR_PRIMARY_1",
+    "config_value": "#27AE60",
+    "scope": "res",
+    "reseller": "training_reseller1"
+  },
+  {
+    "config_name": "PORTAL_CSS_COLOR_MENU_BAR_PRIMARY_2",
+    "config_value": "#F39C12",
+    "scope": "res",
+    "reseller": "training_reseller1"
+  },
+  {
+    "config_name": "PORTAL_WEBPHONE_PWA_BACKGROUND_COLOR",
+    "config_value": "#8E44AD",
+    "scope": "res",
+    "reseller": "training_reseller1"
+  },
+  {
+    "config_name": "PORTAL_WEBPHONE_PWA_THEME_COLOR",
+    "config_value": "#E74C3C",
+    "scope": "res",
+    "reseller": "training_reseller1"
+  },
+  {
+    "config_name": "PORTAL_THEME_ACCENT",
+    "config_value": "#3498DB",
+    "scope": "res",
+    "reseller": "training_reseller1"
+  },
+  {
+    "config_name": "PORTAL_THEME_PRIMARY",
+    "config_value": "#2ECC71",
+    "scope": "res",
+    "reseller": "training_reseller1"
   }
 ]

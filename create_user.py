@@ -3,18 +3,24 @@ import json
 import os
 import re
 from dotenv import load_dotenv
+from logging_setup import setup_logging
+
+# Initialize logger
+logger = setup_logging()
 
 # Load variables from the .env file into the environment
 load_dotenv(override=True)
 
 # Retrieve the API token
 API_TOKEN = os.getenv("API_TOKEN")
-print(f"Loaded API_TOKEN: {API_TOKEN}")
+print(f"Loaded API_TOKEN: {API_TOKEN}")  # Keep for terminal
+logger.info(f"Loaded API_TOKEN: {API_TOKEN}")
 
 def validate_extension(extension):
     """Check if extension is numeric."""
     if not extension.isdigit():
         raise ValueError("Extension must be numeric (e.g., 1001).")
+    logger.info(f"Validated extension: {extension}")
     return extension
 
 def validate_email(email):
@@ -22,12 +28,14 @@ def validate_email(email):
     email_pattern = re.compile(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
     if not email_pattern.match(email):
         raise ValueError("Invalid email format (e.g., user@domain.com).")
+    logger.info(f"Validated email: {email}")
     return email
 
 def validate_name(name, field_name):
     """Check if name is non-empty."""
     if not name:
         raise ValueError(f"{field_name} cannot be empty.")
+    logger.info(f"Validated {field_name.lower()}: {name}")
     return name
 
 def create_user(custID, domain):
@@ -45,7 +53,8 @@ def create_user(custID, domain):
             email = validate_email(input("Enter the email address: ").strip())
             break  # Exit loop if all inputs are valid
         except ValueError as e:
-            print(f"Error: {e}. Please try again.")
+            print(f"Error: {e}. Please try again.")  # Keep for terminal
+            logger.warning(f"Input validation error: {e}")
 
     url = f"https://{custID}.trynetsapiens.com/ns-api/v2/domains/{domain}/users"
     headers = {
@@ -99,18 +108,39 @@ def create_user(custID, domain):
         "caller-id-name": f"{first_name} {last_name}"
     }
     
-    print(f"Calling API URL: {url}")
-    print(f"Request payload: {json.dumps(data, indent=2)}")  # Add this line
-    response = requests.post(url, headers=headers, data=json.dumps(data))
+    print(f"Calling API URL: {url}")  # Keep for terminal
+    logger.info(f"Calling API URL: {url} to create user: {first_name} {last_name} (Ext: {extension})")
+    print(f"Request payload: {json.dumps(data, indent=2)}")  # Keep for terminal
+    logger.debug(f"Request payload: {json.dumps(data, indent=2)}")
     
-    print(f"Status Code: {response.status_code}")
-    if response.status_code in [200, 201, 202]:
-        print(f"User {first_name} {last_name} (Ext: {extension}) created successfully")
-    else:
-        print(f"Failed to create user: {response.status_code}")
-        print(response.text)
+    try:
+        response = requests.post(url, headers=headers, data=json.dumps(data))
+        
+        print(f"Status Code: {response.status_code}")  # Keep for terminal
+        logger.info(f"Status Code: {response.status_code} for user: {first_name} {last_name} (Ext: {extension})")
+        
+        if response.status_code in [200, 201, 202]:
+            print(f"User {first_name} {last_name} (Ext: {extension}) created successfully")  # Keep for terminal
+            logger.info(f"User '{first_name} {last_name}' (Ext: {extension}) created successfully with status code: {response.status_code}")
+        else:
+            print(f"Failed to create user: {response.status_code}")  # Keep for terminal
+            print(response.text)  # Keep for terminal
+            logger.error(f"Failed to create user '{first_name} {last_name}' (Ext: {extension}): {response.status_code}")
+            logger.debug(f"Response text: {response.text}")
+    except requests.exceptions.RequestException as e:
+        print(f"Error calling {url}: {e}")  # Keep for terminal
+        logger.error(f"Error calling {url} to create user '{first_name} {last_name}' (Ext: {extension}): {e}")
 
 if __name__ == "__main__":
+    print("Starting user creation script")  # Keep for terminal
+    logger.info("Starting user creation script")
+    
     custID = input("Enter the customer domain (e.g., sgdemo): ").strip()
     domain = input("Enter the domain name (e.g., sgdemo): ").strip()
+    logger.info(f"Customer domain entered: {custID}")
+    logger.info(f"Domain name entered: {domain}")
+    
     create_user(custID, domain)
+    
+    print("User creation script completed")  # Keep for terminal
+    logger.info("User creation script completed")

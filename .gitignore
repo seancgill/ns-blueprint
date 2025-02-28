@@ -12,3 +12,5 @@ venv/
 
 info.txt
 additional-things-to-do.txt
+config_files_fixer.sh
+logs/

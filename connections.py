@@ -2,6 +2,10 @@ import requests
 import json
 import os
 from dotenv import load_dotenv
+from logging_setup import setup_logging
+
+# Initialize logger
+logger = setup_logging()
 
 # Load variables from the .env file into the environment
 load_dotenv()
@@ -9,23 +13,25 @@ load_dotenv()
 # Retrieve the API token
 API_TOKEN = os.getenv("API_TOKEN")
 
-def get_api_url(domain):
+print(f"Loaded API_TOKEN: {API_TOKEN}")  # Keep for terminal
+logger.info(f"Loaded API_TOKEN: {API_TOKEN}")
 
+def get_api_url(domain):
     return f"https://{domain}.trynetsapiens.com/ns-api/v2/connections"
 
-def create_connection(domain):
+def create_connection(domain, description="ThinQ Secondary Orig & 911", translation_source_host=None):
     """
     Create a connection via the API.
     
     Parameters:
       - domain: the host ID (e.g. 'sgdemo')
       - description: a description for the connection
-      - translation_source_host: value for the "connection-translation-source-host"
+      - translation_source_host: value for the "connection-translation-source-host" (optional)
       
     Returns:
       - The response from the API.
     """
-    translation_source_host = f"{domain}.trynetsapiens.com"
+    translation_source_host = translation_source_host or f"{domain}.trynetsapiens.com"
     url = get_api_url(domain)
     headers = {
         "accept": "application/json",
@@ -66,7 +72,7 @@ def create_connection(domain):
         "connection-orig-match-pattern": "sip*@192.81.236.20",
         "connection-term-match-pattern": "sip:*@192.81.236.20",
         "domain": "*",
-        "description": "ThinQ Secondary Orig & 911",
+        "description": description,
         "connection-audio-relay-enabled": "yes",
         "connection-address": "192.81.236.20",
         "dial-plan": "Inbound DID",
@@ -80,20 +86,23 @@ def create_connection(domain):
     }
     
     # Log the URL being called for troubleshooting
-    print(f"Calling API URL: {url}")
+    print(f"Calling API URL: {url}")  # Keep for terminal
+    logger.info(f"Calling API URL: {url} for connection: {description}")
+    logger.debug(f"Payload: {json.dumps(payload, indent=2)}")
     
     try:
         response = requests.post(url, headers=headers, json=payload)
-        print(f"Status Code: {response.status_code}")
+        print(f"Status Code: {response.status_code}")  # Keep for terminal
+        logger.info(f"Status Code: {response.status_code} for connection: {description}")
+        logger.debug(f"Response text: {response.text}")
         return response
     except requests.exceptions.RequestException as e:
-        print(f"Error calling {url} with payload {payload}")
-        print(f"Exception: {e}")
+        print(f"Error calling {url} with payload {payload}")  # Keep for terminal
+        print(f"Exception: {e}")  # Keep for terminal
+        logger.error(f"Error calling {url} for connection: {description}: {e}")
         raise
 
-
 def create_second_connection(domain):
-
     translation_source_host = f"{domain}.trynetsapiens.com"
     url = get_api_url(domain)
     headers = {
@@ -149,16 +158,21 @@ def create_second_connection(domain):
         "time-zone": "US/Pacific"
     }
     
-    # Log the API URL being called for troubleshooting
-    print(f"Calling API URL: {url}")
+    # Log the URL being called for troubleshooting
+    print(f"Calling API URL: {url}")  # Keep for terminal
+    logger.info(f"Calling API URL: {url} for connection: ThinQ Primary Orig & 911")
+    logger.debug(f"Payload: {json.dumps(payload, indent=2)}")
     
     try:
         response = requests.post(url, headers=headers, json=payload)
-        print(f"Status Code: {response.status_code}")
+        print(f"Status Code: {response.status_code}")  # Keep for terminal
+        logger.info(f"Status Code: {response.status_code} for connection: ThinQ Primary Orig & 911")
+        logger.debug(f"Response text: {response.text}")
         return response
     except requests.exceptions.RequestException as e:
-        print(f"Error calling {url} with payload {payload}")
-        print(f"Exception: {e}")
+        print(f"Error calling {url} with payload {payload}")  # Keep for terminal
+        print(f"Exception: {e}")  # Keep for terminal
+        logger.error(f"Error calling {url} for connection: ThinQ Primary Orig & 911: {e}")
         raise
 
 def create_outbound_connection(domain):
@@ -217,27 +231,44 @@ def create_outbound_connection(domain):
         "time-zone": "US/Pacific"
     }
     
-    # Log the API URL being called for troubleshooting
-    print(f"Calling API URL: {url}")
+    # Log the URL being called for troubleshooting
+    print(f"Calling API URL: {url}")  # Keep for terminal
+    logger.info(f"Calling API URL: {url} for connection: ThinQ LCR Outbound")
+    logger.debug(f"Payload: {json.dumps(payload, indent=2)}")
     
     try:
         response = requests.post(url, headers=headers, json=payload)
-        print(f"Status Code: {response.status_code}")
+        print(f"Status Code: {response.status_code}")  # Keep for terminal
+        logger.info(f"Status Code: {response.status_code} for connection: ThinQ LCR Outbound")
+        logger.debug(f"Response text: {response.text}")
         return response
     except requests.exceptions.RequestException as e:
-        print(f"Error calling {url} with payload {payload}")
-        print(f"Exception: {e}")
+        print(f"Error calling {url} with payload {payload}")  # Keep for terminal
+        print(f"Exception: {e}")  # Keep for terminal
+        logger.error(f"Error calling {url} for connection: ThinQ LCR Outbound: {e}")
         raise
 
 if __name__ == "__main__":
+    print("Starting connection creation script")  # Keep for terminal
+    logger.info("Starting connection creation script")
+    
     # Prompt user for necessary inputs
     domain = input("Enter the host ID (e.g., sgdemo): ").strip()
     description = input("Enter the connection description: ").strip()
     translation_source_host = input("Enter the connection translation source host (<AppIP> or actual IP): ").strip()
+    logger.info(f"Host ID entered: {domain}")
+    logger.info(f"Connection description entered: {description}")
+    logger.info(f"Translation source host entered: {translation_source_host}")
     
     response = create_connection(domain, description, translation_source_host)
     if response.status_code in (201, 202):
-        print("Connection created successfully")
+        print("Connection created successfully")  # Keep for terminal
+        logger.info(f"Connection '{description}' created successfully with status code: {response.status_code}")
     else:
-        print(f"Failed to create connection: {response.status_code}")
-        print(response.text)
+        print(f"Failed to create connection: {response.status_code}")  # Keep for terminal
+        print(response.text)  # Keep for terminal
+        logger.error(f"Failed to create connection '{description}': {response.status_code}")
+        logger.debug(f"Response text: {response.text}")
+    
+    print("Connection creation script completed")  # Keep for terminal
+    logger.info("Connection creation script completed")

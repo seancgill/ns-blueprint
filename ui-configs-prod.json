@@ -343,10 +343,6 @@
   },
   {
     "config_name": "PORTAL_USER_SECURE_PASSWORD_EXTENSION_FORBID_LIST",
-    "config_value": "yes"
-  },
-  {
-    "config_name": "PORTAL_USER_SECURE_PASSWORD_EXTENSION_FORBID_LIST",
     "config_value": "0000,1111,2222,3333,4444,5555,6666,7777,8888,9999,1234,4321,5678,8765,00000,11111,22222,33333,44444,55555,66666,77777,88888,99999,123456,654321,987654,000000,111111,222222,333333,444444,555555,666666,777777,888888,999999,1234567,7654321,12345678,87654321,00000000,11111111,22222222,33333333,44444444,55555555,66666666,77777777,88888888,99999999"
   },
   {
@@ -393,5 +389,72 @@
   {
     "config_name": "ANALYTICS_ENABLE_AGENTS_ACCESS",
     "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_USERS_ALLOW_PASSWORD_CHANGE",
+    "config_value": "yes",
+    "scope": "su"
+  },
+  {
+    "config_name": "MOBILE_ANDROID_RECORD_ALLOW",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "MOBILE_IOS_RECORD_ALLOW",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_ANSWERRULES_AUDIO_CONFIRMATION_OPTIONS",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_SHOW_DEVICE_DEFAULTS_DOMAIN",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_SHOW_DOMAIN_BLOCKED_NUMBERS",
+    "config_value": "yes",
+    "scope": "su"
+  },
+  {
+    "config_name": "PORTAL_SHOW_DOMAIN_BLOCKED_NUMBERS_MODAL",
+    "config_value": "yes",
+    "scope": "su"
+  },
+  {
+    "config_name": "PORTAL_USERS_ALLOW_VIEW_AREA_CODE",
+    "config_value": "no"
+  },
+  {
+    "config_name": "PORTAL_THEME_PRIMARY",
+    "config_value": "#18a34a"
+  },
+  {
+    "config_name": "PORTAL_CSS_PRIMARY_1",
+    "config_value": "#001a9b"
+  },
+  {
+    "config_name": "PORTAL_CSS_PRIMARY_2",
+    "config_value": "#18a34a"
+  },
+  {
+    "config_name": "PORTAL_CSS_COLOR_MENU_BAR_PRIMARY_1",
+    "config_value": "#808080"
+  },
+  {
+    "config_name": "PORTAL_CSS_COLOR_MENU_BAR_PRIMARY_2",
+    "config_value": "#001a9b"
+  },
+  {
+    "config_name": "PORTAL_WEBPHONE_PWA_BACKGROUND_COLOR",
+    "config_value": "#808080"
+  },
+  {
+    "config_name": "PORTAL_WEBPHONE_PWA_THEME_COLOR",
+    "config_value": "#18a34a"
+  },
+  {
+    "config_name": "PORTAL_THEME_ACCENT",
+    "config_value": "#18a34a"
   }
 ]
