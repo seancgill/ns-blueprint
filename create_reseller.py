@@ -16,8 +16,8 @@ API_TOKEN = os.getenv("API_TOKEN")
 print(API_TOKEN)  # Keep for terminal
 logger.info(f"Loaded API_TOKEN: {API_TOKEN}")  # Log to file and terminal
 
-def create_reseller(domain, reseller_name, description):
-    url = f"https://{domain}.trynetsapiens.com/ns-api/v2/resellers"
+def create_reseller(custID, reseller_name, description):
+    url = f"https://api.{custID}.ucaas.tech/ns-api/v2/resellers"
     headers = {
         'accept': '*/*',
         'content-type': 'application/json',
@@ -53,12 +53,12 @@ if __name__ == "__main__":
     
     reseller_name = input("Enter the reseller name: ")
     description = input("Enter the description: ")
-    domain = input("Enter the domain (e.g., sgdemo): ")  # Added domain input to replace 'yourdomain'
+    custID = input("Enter the custID (e.g., sgdemo): ")  # Added custID input to replace 'yourcustID'
     logger.info(f"Reseller name entered: {reseller_name}")
     logger.info(f"Description entered: {description}")
-    logger.info(f"Domain entered: {domain}")
+    logger.info(f"custID entered: {custID}")
     
-    create_reseller(domain, reseller_name, description)
+    create_reseller(custID, reseller_name, description)
     
     print("Reseller creation script completed")  # Keep for terminal
     logger.info("Reseller creation script completed")

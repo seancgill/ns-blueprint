@@ -40,7 +40,7 @@ def create_device(custID, domain, extension):
         domain (str): Domain name (e.g., 'sgdemo')
         extension (str): User extension (e.g., '1001')
     """
-    url = f"https://{custID}.trynetsapiens.com/ns-api/v2/domains/{domain}/users/{extension}/devices"
+    url = f"https://api.{custID}.ucaas.tech/ns-api/v2/domains/{domain}/users/{extension}/devices"
     headers = {
         'accept': 'application/json',
         'content-type': 'application/json',

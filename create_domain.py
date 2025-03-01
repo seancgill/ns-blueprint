@@ -17,7 +17,7 @@ print(f"Loaded API_TOKEN: {API_TOKEN}")  # Keep for terminal
 logger.info(f"Loaded API_TOKEN: {API_TOKEN}")
 
 def create_domain(custID, domain, reseller, description, dial_plan, dial_policy, area_code, caller_id_name, caller_id_number, caller_id_number_emergency):
-    url = f"https://{custID}.trynetsapiens.com/ns-api/v2/domains"
+    url = f"https://api.{custID}.ucaas.tech/ns-api/v2/domains"
     headers = {
         'accept': 'application/json',
         'content-type': 'application/json',

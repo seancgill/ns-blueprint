@@ -56,7 +56,7 @@ def create_user(custID, domain):
             print(f"Error: {e}. Please try again.")  # Keep for terminal
             logger.warning(f"Input validation error: {e}")
 
-    url = f"https://{custID}.trynetsapiens.com/ns-api/v2/domains/{domain}/users"
+    url = f"https://api.{custID}.ucaas.tech/ns-api/v2/domains/{domain}/users"
     headers = {
         'accept': 'application/json',
         'content-type': 'application/json',

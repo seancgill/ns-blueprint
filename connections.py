@@ -16,23 +16,20 @@ API_TOKEN = os.getenv("API_TOKEN")
 print(f"Loaded API_TOKEN: {API_TOKEN}")  # Keep for terminal
 logger.info(f"Loaded API_TOKEN: {API_TOKEN}")
 
-def get_api_url(domain):
-    return f"https://{domain}.trynetsapiens.com/ns-api/v2/connections"
-
-def create_connection(domain, description="ThinQ Secondary Orig & 911", translation_source_host=None):
+def create_connection(custID, description="ThinQ Secondary Orig & 911", translation_source_host=None):
     """
     Create a connection via the API.
     
     Parameters:
-      - domain: the host ID (e.g. 'sgdemo')
+      - custID: the host ID (e.g. 'sgdemo')
       - description: a description for the connection
       - translation_source_host: value for the "connection-translation-source-host" (optional)
       
     Returns:
       - The response from the API.
     """
-    translation_source_host = translation_source_host or f"{domain}.trynetsapiens.com"
-    url = get_api_url(domain)
+    translation_source_host = translation_source_host or f"{custID}.trynetsapiens.com"
+    url = f"https://api.{custID}.ucaas.tech/ns-api/v2/connections"
     headers = {
         "accept": "application/json",
         "authorization": f"Bearer {API_TOKEN}",
@@ -102,9 +99,9 @@ def create_connection(domain, description="ThinQ Secondary Orig & 911", translat
         logger.error(f"Error calling {url} for connection: {description}: {e}")
         raise
 
-def create_second_connection(domain):
-    translation_source_host = f"{domain}.trynetsapiens.com"
-    url = get_api_url(domain)
+def create_second_connection(custID):
+    translation_source_host = f"{custID}.trynetsapiens.com"
+    url = f"https://api.{custID}.ucaas.tech/ns-api/v2/connections"
     headers = {
         "accept": "application/json",
         "authorization": f"Bearer {API_TOKEN}",
@@ -175,9 +172,9 @@ def create_second_connection(domain):
         logger.error(f"Error calling {url} for connection: ThinQ Primary Orig & 911: {e}")
         raise
 
-def create_outbound_connection(domain):
-    translation_source_host = f"{domain}.trynetsapiens.com"
-    url = get_api_url(domain)
+def create_outbound_connection(custID):
+    translation_source_host = f"{custID}.trynetsapiens.com"
+    url = f"https://api.{custID}.ucaas.tech/ns-api/v2/connections"
     headers = {
         "accept": "application/json",
         "authorization": f"Bearer {API_TOKEN}",
@@ -253,14 +250,14 @@ if __name__ == "__main__":
     logger.info("Starting connection creation script")
     
     # Prompt user for necessary inputs
-    domain = input("Enter the host ID (e.g., sgdemo): ").strip()
+    custID = input("Enter the host ID (e.g., sgdemo): ").strip()
     description = input("Enter the connection description: ").strip()
     translation_source_host = input("Enter the connection translation source host (<AppIP> or actual IP): ").strip()
-    logger.info(f"Host ID entered: {domain}")
+    logger.info(f"Host ID entered: {custID}")
     logger.info(f"Connection description entered: {description}")
     logger.info(f"Translation source host entered: {translation_source_host}")
     
-    response = create_connection(domain, description, translation_source_host)
+    response = create_connection(custID, description, translation_source_host)
     if response.status_code in (201, 202):
         print("Connection created successfully")  # Keep for terminal
         logger.info(f"Connection '{description}' created successfully with status code: {response.status_code}")

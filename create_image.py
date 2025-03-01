@@ -17,8 +17,8 @@ if not API_TOKEN:
 print(f"Loaded API_TOKEN: {API_TOKEN}")
 logger.info(f"Loaded API_TOKEN: {API_TOKEN}")
 
-def create_image(domain, filename, file_path, reseller=None):
-    url = f"https://{domain}.trynetsapiens.com/ns-api/v2/images/{quote(filename, safe='')}"
+def create_image(custID, filename, file_path, reseller=None):
+    url = f"https://api.{custID}.ucaas.tech/ns-api/v2/images/{quote(filename, safe='')}"
     headers = {
         "accept": "application/json",
         "Authorization": f"Bearer {API_TOKEN}"
@@ -53,7 +53,7 @@ def create_image(domain, filename, file_path, reseller=None):
         print(f"An error occurred while uploading {filename}: {traceback.format_exc()}")
         logger.error(f"An error occurred while uploading {filename}: {traceback.format_exc()}")
 
-def process_images(image_source, domain, reseller=None, local=False):
+def process_images(image_source, custID, reseller=None, local=False):
     output_directory = "image_files"
     filename_mapping = {
         "512PWA.png": "512x512.jpg",
@@ -104,22 +104,22 @@ def process_images(image_source, domain, reseller=None, local=False):
         file_path = os.path.join(output_directory, image_file)
         print(f"Uploading {filename} from {file_path}")
         logger.info(f"Uploading {filename} from {file_path}")
-        create_image(domain, filename, file_path, reseller)
+        create_image(custID, filename, file_path, reseller)
 
 if __name__ == "__main__":
     print("Starting image processing script")
     logger.info("Starting image processing script")
-    domain = input("Enter the domain: ").strip()
+    custID = input("Enter the host ID (e.g., sgdemo): ").strip()
     image_url = input("Enter the image URL (or local path if prefixed with 'file://'): ").strip()
-    logger.info(f"Domain entered: {domain}")
+    logger.info(f"Host ID entered: {custID}")
     logger.info(f"Image source entered: {image_url}")
-    if domain and image_url:
+    if custID and image_url:
         if image_url.startswith("file://"):
-            process_images(image_url[7:], domain, local=True)  # Strip 'file://' prefix
+            process_images(image_url[7:], custID, local=True)  # Strip 'file://' prefix
         else:
-            process_images(image_url, domain)
+            process_images(image_url, custID)
     else:
-        print("Both domain and image URL/path are required!")
-        logger.error("Both domain and image URL/path are required")
+        print("Both host ID and image URL/path are required!")
+        logger.error("Both host ID and image URL/path are required")
     print("Image processing script completed")
     logger.info("Image processing script completed")

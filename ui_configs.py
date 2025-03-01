@@ -66,7 +66,7 @@ headers = {
 }
 
 def get_api_url(customer_name):
-    return f"https://{customer_name}.trynetsapiens.com/ns-api/v2/configurations"
+    return f"https://api.{customer_name}.ucaas.tech/ns-api/v2/configurations"
 
 def load_configurations(filename, customer_name):
     with open(filename, 'r') as file:

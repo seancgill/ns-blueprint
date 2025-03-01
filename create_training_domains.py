@@ -18,7 +18,7 @@ print(f"Loaded API_TOKEN: {API_TOKEN}")
 logger.info(f"Loaded API_TOKEN: {API_TOKEN}")
 
 def create_reseller(custID, reseller, description="Training reseller created via API"):
-    url = f"https://{custID}.trynetsapiens.com/ns-api/v2/resellers"
+    url = f"https://api.{custID}.ucaas.tech/ns-api/v2/resellers"
     headers = {
         'accept': '*/*',
         'content-type': 'application/json',
@@ -52,7 +52,7 @@ def create_reseller(custID, reseller, description="Training reseller created via
         logger.error(f"Error calling {url} to create reseller '{reseller}': {e}")
 
 def create_domain(custID, domain, reseller, description, dial_plan, dial_policy):
-    url = f"https://{custID}.trynetsapiens.com/ns-api/v2/domains"
+    url = f"https://api.{custID}.ucaas.tech/ns-api/v2/domains"
     headers = {
         'accept': 'application/json',
         'content-type': 'application/json',
@@ -94,7 +94,7 @@ def create_domain(custID, domain, reseller, description, dial_plan, dial_policy)
         logger.error(f"Error calling {url} to create domain '{domain}': {e}")
 
 def create_user(custID, domain, extension, first_name, last_name, email, user_scope):
-    url = f"https://{custID}.trynetsapiens.com/ns-api/v2/domains/{domain}/users"
+    url = f"https://api.{custID}.ucaas.tech/ns-api/v2/domains/{domain}/users"
     headers = {
         'accept': 'application/json',
         'content-type': 'application/json',
@@ -166,7 +166,7 @@ def create_user(custID, domain, extension, first_name, last_name, email, user_sc
         logger.error(f"Error calling {url} to create user '{first_name} {last_name}' (Ext: {extension}): {e}")
 
 def create_device(custID, domain, extension):
-    url = f"https://{custID}.trynetsapiens.com/ns-api/v2/domains/{domain}/users/{extension}/devices"
+    url = f"https://api.{custID}.ucaas.tech/ns-api/v2/domains/{domain}/users/{extension}/devices"
     headers = {
         'accept': 'application/json',
         'content-type': 'application/json',
@@ -214,7 +214,7 @@ def create_device(custID, domain, extension):
         logger.error(f"Error calling {url} to create device for extension {extension}: {e}")
 
 def create_call_park(custID, domain, callqueue, description):
-    url = f"https://{custID}.trynetsapiens.com/ns-api/v2/domains/{domain}/callqueues"
+    url = f"https://api.{custID}.ucaas.tech/ns-api/v2/domains/{domain}/callqueues"
     headers = {
         'accept': '*/*',
         'content-type': 'application/json',
@@ -259,7 +259,7 @@ def create_call_park(custID, domain, callqueue, description):
         logger.error(f"Error calling {url} to create call park '{callqueue}': {e}")
 
 def create_call_queue(custID, domain, callqueue, description, dispatch_type="Ring All"):
-    url = f"https://{custID}.trynetsapiens.com/ns-api/v2/domains/{domain}/callqueues"
+    url = f"https://api.{custID}.ucaas.tech/ns-api/v2/domains/{domain}/callqueues"
     headers = {
         'accept': '*/*',
         'content-type': 'application/json',
@@ -298,7 +298,7 @@ def create_call_queue(custID, domain, callqueue, description, dispatch_type="Rin
         logger.error(f"Error calling {url} to create call queue '{callqueue}': {e}")
 
 def add_agent_to_call_queue(custID, domain, callqueue, agent_extension):
-    url = f"https://{custID}.trynetsapiens.com/ns-api/v2/domains/{domain}/callqueues/{callqueue}/agents"
+    url = f"https://api.{custID}.ucaas.tech/ns-api/v2/domains/{domain}/callqueues/{callqueue}/agents"
     headers = {
         'accept': 'application/json',
         'content-type': 'application/json',
