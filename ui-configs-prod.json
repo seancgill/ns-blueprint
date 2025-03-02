@@ -8,6 +8,10 @@
     "config_value": "custID.trynetsapiens.com"
   },
   {
+    "config_name": "PORTAL_USERS_ALLOW_RECORDING",
+    "config_value": "yes"
+  },
+  {
     "config_name": "PORTAL_CALLHISTORY_FILTERS_SITE",
     "config_value": "yes"
   },
@@ -359,7 +363,7 @@
   },
   {
     "config_name": "PORTAL_FOOTER_HIDE_HOSTNAME",
-    "config_value": "yes",
+    "config_value": "no",
     "scope": "su"
   },
   {

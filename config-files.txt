@@ -1,0 +1,10 @@
+{
+    # Check if VoiceservicesUrl configuration exists, if not, append it
+    grep -q "Configure::write('VoiceservicesUrl'" /etc/netsapiens/api_config.php || \
+        echo "Configure::write('VoiceservicesUrl', 'https://voice-services.netsapiens.com:8000/v1');" >> /etc/netsapiens/api_config.php
+
+    # Check if VoiceservicesLicense configuration exists, if not, append it
+    grep -q "Configure::write('VoiceservicesLicense'" /etc/netsapiens/api_config.php || \
+        echo "Configure::write('VoiceservicesLicense', '59ba619b-24cc-4d16-a4f8-5a50d5f82e7b');" >> /etc/netsapiens/api_config.php
+
+}

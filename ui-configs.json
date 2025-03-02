@@ -9,7 +9,27 @@
   },
   {
     "config_name": "PORTAL_VOICE_SPEECH_TO_TRANSCRIPTION_VENDOR",
-    "config_value": "google_recognize"
+    "config_value": "deepgram"
+  },
+  {
+    "config_name": "PORTAL_VOICE_TRANSCRIPTION_SENTIMENT",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_VOICE_TRANSCRIPTION_SENTIMENT_VENDOR",
+    "config_value": "deepgram"
+  },
+  {
+    "config_name": "PORTAL_VOICE_TRANSCRIPTION_SENTIMENT_ENDING_SECONDS",
+    "config_value": "30"
+  },
+  {
+    "config_name": "PORTAL_VOICE_SPEECH_TO_TRANSCRIPTION_SUMMARY_VENDOR",
+    "config_value": "deepgram"
+  },
+  {
+    "config_name": "PORTAL_VOICE_SPEECH_TO_TRANSCRIPTION_TOPICS_VENDOR",
+    "config_value": "deepgram"
   },
   {
     "config_name": "PORTAL_USERS_VMAIL_TRANSCRIPTION_DEEPGRAM",
@@ -26,6 +46,10 @@
   {
     "config_name": "PORTAL_FQDN",
     "config_value": "custID.trynetsapiens.com"
+  },
+  {
+    "config_name": "PORTAL_USERS_ALLOW_RECORDING",
+    "config_value": "yes"
   },
   {
     "config_name": "PORTAL_CALLHISTORY_FILTERS_SITE",
@@ -451,7 +475,7 @@
   },
   {
     "config_name": "PORTAL_FOOTER_HIDE_HOSTNAME",
-    "config_value": "yes",
+    "config_value": "no",
     "scope": "su"
   },
   {

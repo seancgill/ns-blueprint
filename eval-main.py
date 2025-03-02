@@ -85,7 +85,7 @@ if __name__ == "__main__":
 
     print("Creating training domains")  # Keep for terminal
     logger.info("Creating training domains")
-    #create_training_domains(custID)
+    create_training_domains(custID)
     
     print("NetSapiens API setup script completed")  # Keep for terminal
     logger.info("NetSapiens API setup script completed")

@@ -9,8 +9,10 @@ venv/
 .env
 
 # Stuff
-
+config_files_fixer.sh
 info.txt
 additional-things-to-do.txt
-config_files_fixer.sh
+notes-for-Chris-A.txt
+aws-keys.png
 logs/
+Cust_Keys/

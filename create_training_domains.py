@@ -213,45 +213,107 @@ def create_device(custID, domain, extension):
         print(f"Error calling {url}: {e}")
         logger.error(f"Error calling {url} to create device for extension {extension}: {e}")
 
+# API v2 call park is broken
+# def create_call_park(custID, domain, callqueue, description):
+#     url = f"https://api.{custID}.ucaas.tech/ns-api/v2/domains/{domain}/callqueues"
+#     headers = {
+#         'accept': '*/*',
+#         'content-type': 'application/json',
+#         'Authorization': f'Bearer {API_TOKEN}'
+#     }
+#     data = {
+#         "synchronous": "no",
+#         "callqueue": callqueue,
+#         "description": description,
+#         "callqueue-dispatch-type": "Call Park",
+#         "callqueue-calculate-statistics": "no",
+#         "callqueue-agent-dispatch-timeout-seconds": 0,
+#         "callqueue-max-current-callers-to-accept-new-callers": 1,
+#         "callqueue-max-wait-timeout-minutes": 60,
+#         "site": "",
+#         "subscriber_group": ""
+#     }
+#     print(f"Calling API URL: {url}")
+#     logger.info(f"Calling API URL: {url} to create call park: {callqueue}")
+#     print(f"Request payload: {json.dumps(data, indent=2)}")
+#     logger.debug(f"Request payload: {json.dumps(data, indent=2)}")
+#     try:
+#         response = requests.post(url, headers=headers, data=json.dumps(data))
+#         print(f"Status Code: {response.status_code}")
+#         logger.info(f"Status Code: {response.status_code} for call park: {callqueue}")
+#         if response.status_code in [200, 201, 202]:
+#             print(f"Call park {callqueue} ({description}) created successfully")
+#             logger.info(f"Call park '{callqueue}' ({description}) created successfully with status code: {response.status_code}")
+#         elif response.status_code == 409:
+#             print(f"Call park {callqueue} already exists, attempting update")
+#             logger.info(f"Call park '{callqueue}' already exists, attempting update (Status: 409)")
+#             response = requests.put(url, headers=headers, data=json.dumps(data))
+#             print(f"PUT Status Code: {response.status_code} for updating call park: {callqueue}")
+#             logger.info(f"PUT Status Code: {response.status_code} for updating call park: {callqueue}")
+#         else:
+#             print(f"Failed to create call park {callqueue}: {response.status_code}")
+#             logger.error(f"Failed to create call park '{callqueue}': {response.status_code}")
+#         print(response.text)
+#         logger.debug(f"Response text: {response.text}")
+#     except requests.exceptions.RequestException as e:
+#         print(f"Error calling {url}: {e}")
+#         logger.error(f"Error calling {url} to create call park '{callqueue}': {e}")
+
 def create_call_park(custID, domain, callqueue, description):
-    url = f"https://api.{custID}.ucaas.tech/ns-api/v2/domains/{domain}/callqueues"
+    url = f"https://core1-ord.{custID}.ucaas.tech/ns-api/"
     headers = {
         'accept': '*/*',
-        'content-type': 'application/json',
         'Authorization': f'Bearer {API_TOKEN}'
     }
     data = {
-        "synchronous": "no",
-        "callqueue": callqueue,
+        "object": "callqueue",
+        "action": "create",
         "description": description,
-        "callqueue-dispatch-type": "Call Park",
-        "callqueue-calculate-statistics": "no",
-        "callqueue-agent-dispatch-timeout-seconds": 0,
-        "callqueue-max-current-callers-to-accept-new-callers": 1,
-        "callqueue-max-wait-timeout-minutes": 60,
         "site": "",
-        "subscriber_group": ""
+        "huntgroup_option": "Call Park",
+        "run_stats": "yes",
+        "agent_required": "no",
+        "queue_audio": "moh",
+        "wait_limit": "0",
+        "length_limit": "0",
+        "callback_max_hours": "0",
+        "connect_to": "15",
+        "sring_1st": "1",
+        "sring_inc": "1",
+        "auto_logout": "no",
+        "enable_sms": "0",
+        "initiation_keyword": "HELP",
+        "initiation_message": "You have now entered the queue. An agent will be with you shortly.",
+        "initiation_needed_message": "Reply HELP to enter queue.",
+        "termination_keyword": "done",
+        "termination_message": "You have now exited the conversation. Thank you.",
+        "no_agents_message": "Sorry, there are no agents available right now. Please check at a later time.",
+        "queue_name": callqueue,    
+        "queue": callqueue,
+        "domain": domain,
+        "queue_option": ""
     }
+    
     print(f"Calling API URL: {url}")
     logger.info(f"Calling API URL: {url} to create call park: {callqueue}")
     print(f"Request payload: {json.dumps(data, indent=2)}")
     logger.debug(f"Request payload: {json.dumps(data, indent=2)}")
+    
     try:
-        response = requests.post(url, headers=headers, data=json.dumps(data))
+        response = requests.post(url, headers=headers, data=data)
         print(f"Status Code: {response.status_code}")
         logger.info(f"Status Code: {response.status_code} for call park: {callqueue}")
+        
         if response.status_code in [200, 201, 202]:
             print(f"Call park {callqueue} ({description}) created successfully")
             logger.info(f"Call park '{callqueue}' ({description}) created successfully with status code: {response.status_code}")
         elif response.status_code == 409:
-            print(f"Call park {callqueue} already exists, attempting update")
-            logger.info(f"Call park '{callqueue}' already exists, attempting update (Status: 409)")
-            response = requests.put(url, headers=headers, data=json.dumps(data))
-            print(f"PUT Status Code: {response.status_code} for updating call park: {callqueue}")
-            logger.info(f"PUT Status Code: {response.status_code} for updating call park: {callqueue}")
+            print(f"Call park {callqueue} already exists, skipping")
+            logger.info(f"Call park '{callqueue}' already exists, skipping (Status: 409)")
         else:
             print(f"Failed to create call park {callqueue}: {response.status_code}")
             logger.error(f"Failed to create call park '{callqueue}': {response.status_code}")
+        
         print(response.text)
         logger.debug(f"Response text: {response.text}")
     except requests.exceptions.RequestException as e:
