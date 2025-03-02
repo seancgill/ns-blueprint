@@ -76,7 +76,7 @@ def create_connection(custID, description="ThinQ Secondary Orig & 911", translat
         "dial-policy": "Permit All",
         "connection-linked-billing-user": "domain",
         "connection-translation-request-host": "192.81.236.20",
-        "connection-custom-p-asserted-id-format": "passerted",
+        #"connection-custom-p-asserted-id-format": "passerted",
         "connection-translation-source-host": translation_source_host,
         "utc-offset": "-7",
         "time-zone": "US/Pacific"
@@ -149,7 +149,7 @@ def create_second_connection(custID):
         "dial-policy": "Permit All",
         "connection-linked-billing-user": "domain",
         "connection-translation-request-host": "192.81.237.20",
-        "connection-custom-p-asserted-id-format": "passerted",
+        #"connection-custom-p-asserted-id-format": "passerted",
         "connection-translation-source-host": translation_source_host,
         "utc-offset": "-7",
         "time-zone": "US/Pacific"
@@ -222,7 +222,7 @@ def create_outbound_connection(custID):
         "dial-policy": "Permit All",
         "connection-linked-billing-user": "domain",
         "connection-translation-request-host": "a.icr.commio.com",
-        "connection-custom-p-asserted-id-format": "passerted",
+        #"connection-custom-p-asserted-id-format": "passerted",
         "connection-translation-source-host": translation_source_host,
         "utc-offset": "-7",
         "time-zone": "US/Pacific"
