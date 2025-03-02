@@ -3,6 +3,7 @@ from create_reseller import create_reseller
 from create_image import process_images
 from ui_configs import update_configurations
 from connections import create_connection, create_second_connection, create_outbound_connection
+from routes import create_us_domestic_route
 from create_user import create_user
 from create_device import create_device  
 from create_training_domains import create_training_domains
@@ -59,6 +60,10 @@ if __name__ == "__main__":
     create_connection(custID)
     create_second_connection(custID)
     create_outbound_connection(custID)
+    print("Setting up US Domestic Route...")  # Keep for terminal
+    logger.info("Setting up US Domestic Route...")
+    create_us_domestic_route(custID)
+
     
     print(f"Creating domain: {domain}")  # Keep for terminal
     logger.info(f"Creating domain: {domain}")

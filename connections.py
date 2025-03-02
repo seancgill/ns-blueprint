@@ -23,12 +23,12 @@ def create_connection(custID, description="ThinQ Secondary Orig & 911", translat
     Parameters:
       - custID: the host ID (e.g. 'sgdemo')
       - description: a description for the connection
-      - translation_source_host: value for the "connection-translation-source-host" (optional)
+      - translation_source_host: value for the "connection-translation-source-host" (optional, defaults to https://{custID}.ucaas.tech)
       
     Returns:
       - The response from the API.
     """
-    translation_source_host = translation_source_host or f"{custID}.trynetsapiens.com"
+    translation_source_host = f"https://{custID}.ucaas.tech"  # Updated format
     url = f"https://api.{custID}.ucaas.tech/ns-api/v2/connections"
     headers = {
         "accept": "application/json",
@@ -100,7 +100,7 @@ def create_connection(custID, description="ThinQ Secondary Orig & 911", translat
         raise
 
 def create_second_connection(custID):
-    translation_source_host = f"{custID}.trynetsapiens.com"
+    translation_source_host = f"https://{custID}.ucaas.tech"  # Updated format
     url = f"https://api.{custID}.ucaas.tech/ns-api/v2/connections"
     headers = {
         "accept": "application/json",
@@ -173,7 +173,7 @@ def create_second_connection(custID):
         raise
 
 def create_outbound_connection(custID):
-    translation_source_host = f"{custID}.trynetsapiens.com"
+    translation_source_host = f"https://{custID}.ucaas.tech"  # Updated format
     url = f"https://api.{custID}.ucaas.tech/ns-api/v2/connections"
     headers = {
         "accept": "application/json",
@@ -252,12 +252,11 @@ if __name__ == "__main__":
     # Prompt user for necessary inputs
     custID = input("Enter the host ID (e.g., sgdemo): ").strip()
     description = input("Enter the connection description: ").strip()
-    translation_source_host = input("Enter the connection translation source host (<AppIP> or actual IP): ").strip()
     logger.info(f"Host ID entered: {custID}")
     logger.info(f"Connection description entered: {description}")
-    logger.info(f"Translation source host entered: {translation_source_host}")
     
-    response = create_connection(custID, description, translation_source_host)
+    # No need to prompt for translation_source_host anymore since it's fixed
+    response = create_connection(custID, description)
     if response.status_code in (201, 202):
         print("Connection created successfully")  # Keep for terminal
         logger.info(f"Connection '{description}' created successfully with status code: {response.status_code}")
