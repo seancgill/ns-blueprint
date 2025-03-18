@@ -1,11 +1,11 @@
 [
   {
     "config_name": "MOBILE_REGISTRATION_SERVER",
-    "config_value": "_sip._tls.custID-core-031-mci.custID.ucaas.run:5061"
+    "config_value": "_sip._tls.custID.ucaas.tech"
   },
   {
     "config_name": "PORTAL_FQDN",
-    "config_value": "custID.trynetsapiens.com"
+    "config_value": "portal.custID.ucaas.tech"
   },
   {
     "config_name": "PORTAL_USERS_ALLOW_RECORDING",
@@ -144,6 +144,28 @@
     "config_value": "yes"
   },
   {
+    "config_name": "PORTAL_CALLS_ACTIVE_CALL_POPUPS",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_CALL_POPUP_ENABLED",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_CALL_POPUP_SHOW_DISP_NOTES",
+    "config_value": "yes",
+    "scope": "cca"
+  },
+  {
+    "config_name": "PORTAL_CALL_RECORDING",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_CALL_POPUP_SHOW_NOTES",
+    "config_value": "yes",
+    "scope": "cca"
+  },
+  {
     "config_name": "PORTAL_CALLHISTORY_MAX_RANGE_DAYS",
     "config_value": "90"
   },
@@ -206,6 +228,10 @@
   {
     "config_name": "MOBILE_IOS_GROUP_CHAT_ENABLED",
     "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_PHONES_SNAPMOBILE_HOSTID",
+    "config_value": ""
   },
   {
     "config_name": "PORTAL_ALLOW_AUDIO_MONITOR",

@@ -53,7 +53,7 @@ def create_image(custID, filename, file_path, reseller=None):
         print(f"An error occurred while uploading {filename}: {traceback.format_exc()}")
         logger.error(f"An error occurred while uploading {filename}: {traceback.format_exc()}")
 
-def process_images(image_source, custID, reseller=None, local=False):
+def process_images(image_source, custID, reseller=None, local=False, exclude_filenames=None):
     output_directory = "image_files"
     filename_mapping = {
         "512PWA.png": "512x512.jpg",
@@ -66,6 +66,9 @@ def process_images(image_source, custID, reseller=None, local=False):
         "webphone_main_top_left.png": "250x150.jpg"
     }
 
+    if exclude_filenames is None:
+        exclude_filenames = []
+
     if local:
         # Process local file
         print(f"Processing local image: {image_source} for reseller: {reseller}")
@@ -73,7 +76,7 @@ def process_images(image_source, custID, reseller=None, local=False):
         if not os.path.exists(image_source):
             print(f"Local image file {image_source} not found")
             logger.error(f"Local image file {image_source} not found")
-            return
+            return False  # Indicate failure
         
         with Image.open(image_source) as original_image:
             if original_image.mode == "RGBA":
@@ -89,7 +92,7 @@ def process_images(image_source, custID, reseller=None, local=False):
                 print(f"Resized image saved to {output_path}")
                 logger.info(f"Resized image saved to {output_path}")
     else:
-        # Process URL (original behavior)
+        # Process URL
         print(f"Resizing image from URL: {image_source}")
         logger.info(f"Resizing image from URL: {image_source}")
         resize_image_from_url(image_source, output_directory)
@@ -98,28 +101,52 @@ def process_images(image_source, custID, reseller=None, local=False):
     if not all_files_exist:
         print(f"Error: Not all resized images were created for {reseller or 'system'}")
         logger.error(f"Error: Not all resized images were created for {reseller or 'system'}")
-        return
+        return False  # Indicate failure
 
     for filename, image_file in filename_mapping.items():
+        if filename in exclude_filenames:
+            print(f"Skipping upload for {filename} as per exclusion list")
+            logger.info(f"Skipping upload for {filename} as per exclusion list")
+            continue
         file_path = os.path.join(output_directory, image_file)
         print(f"Uploading {filename} from {file_path}")
         logger.info(f"Uploading {filename} from {file_path}")
         create_image(custID, filename, file_path, reseller)
+    
+    return True  # Indicate success
 
 if __name__ == "__main__":
     print("Starting image processing script")
     logger.info("Starting image processing script")
     custID = input("Enter the host ID (e.g., sgdemo): ").strip()
-    image_url = input("Enter the image URL (or local path if prefixed with 'file://'): ").strip()
     logger.info(f"Host ID entered: {custID}")
-    logger.info(f"Image source entered: {image_url}")
-    if custID and image_url:
-        if image_url.startswith("file://"):
-            process_images(image_url[7:], custID, local=True)  # Strip 'file://' prefix
-        else:
-            process_images(image_url, custID)
+    
+    if not custID:
+        print("Host ID is required!")
+        logger.error("Host ID is required")
     else:
-        print("Both host ID and image URL/path are required!")
-        logger.error("Both host ID and image URL/path are required")
+        while True:
+            image_url = input("Enter the image URL (or local path if prefixed with 'file://', or press Enter to exit): ").strip()
+            logger.info(f"Image source entered: {image_url}")
+            
+            if not image_url:  # Exit if user presses Enter without input
+                print("No URL provided, exiting.")
+                logger.info("No URL provided, exiting")
+                break
+            
+            success = False
+            if image_url.startswith("file://"):
+                success = process_images(image_url[7:], custID, local=True)  # Strip 'file://' prefix
+            else:
+                success = process_images(image_url, custID)
+            
+            if success:
+                print("Image processing completed successfully.")
+                logger.info("Image processing completed successfully")
+                break  # Exit loop on success
+            else:
+                print("Failed to process the image. Please try another URL.")
+                logger.info("Prompting for another URL due to failure")
+
     print("Image processing script completed")
     logger.info("Image processing script completed")

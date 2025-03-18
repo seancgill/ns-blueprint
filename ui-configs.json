@@ -41,11 +41,11 @@
   },
   {
     "config_name": "MOBILE_REGISTRATION_SERVER",
-    "config_value": "_sip._tls.custID-core-031-mci.custID.ucaas.run:5061"
+    "config_value": "_sip._tls.custID.ucaas.tech"
   },
   {
     "config_name": "PORTAL_FQDN",
-    "config_value": "custID.trynetsapiens.com"
+    "config_value": "portal.custID.ucaas.tech"
   },
   {
     "config_name": "PORTAL_USERS_ALLOW_RECORDING",
@@ -156,7 +156,30 @@
     "config_value": "yes"
   },
   {
+    "config_name": "PORTAL_CALLS_ACTIVE_CALL_POPUPS",
+    "config_value": "yes",
+    "scope": "cca"
+  },
+  {
     "config_name": "PORTAL_CALL_QUEUE_GRANULAR_LOGIN",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_CALL_POPUP_ENABLED",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_CALL_POPUP_SHOW_DISP_NOTES",
+    "config_value": "yes",
+    "scope": "cca"
+  },
+  {
+    "config_name": "PORTAL_CALL_POPUP_SHOW_NOTES",
+    "config_value": "yes",
+    "scope": "cca"
+  },
+  {
+    "config_name": "PORTAL_CALL_RECORDING",
     "config_value": "yes"
   },
   {
@@ -180,44 +203,26 @@
     "config_value": "#001a9b"
   },
   {
-    "config_name": "PORTAL_CSS_PRIMARY_1",
-    "config_value": "#001345",
-    "scope": "res",
-    "reseller": "training_reseller1"
+    "config_name": "PORTAL_CSS_PRIMARY_2",
+    "config_value": "#001a9b"
   },
   {
     "config_name": "PORTAL_CSS_PRIMARY_1",
-    "config_value": "#0013fgg",
-    "scope": "res",
+    "config_value": "#001345",
+    "reseller": "training_reseller1"
+  },
+  {
+    "config_name": "PORTAL_PHONES_SNAPMOBILE_HOSTID",
+    "config_value": ""
+  },
+  {
+    "config_name": "PORTAL_CSS_PRIMARY_1",
+    "config_value": "#1C2526",
     "reseller": "training_reseller2"
   },
   {
     "config_name": "PORTAL_CSS_COLOR_MENU_BAR",
     "config_value": "yes"
-  },
-  {
-    "config_name": "PORTAL_CSS_COLOR_MENU_BAR_PRIMARY_1",
-    "config_value": "#808080"
-  },
-  {
-    "config_name": "PORTAL_CSS_COLOR_MENU_BAR_PRIMARY_2",
-    "config_value": "#001a9b"
-  },
-  {
-    "config_name": "PORTAL_WEBPHONE_PWA_BACKGROUND_COLOR",
-    "config_value": "#808080"
-  },
-  {
-    "config_name": "PORTAL_WEBPHONE_PWA_THEME_COLOR",
-    "config_value": "#18a34a"
-  },
-  {
-    "config_name": "PORTAL_THEME_ACCENT",
-    "config_value": "#18a34a"
-  },
-  {
-    "config_name": "PORTAL_THEME_PRIMARY",
-    "config_value": "#808080"
   },
   {
     "config_name": "PORTAL_CSS_COLOR_MENU_BAR_PRIMARY_1",
@@ -551,129 +556,73 @@
     "scope": "su,res"
   },
   {
-    "config_name": "PORTAL_CSS_PRIMARY_2",
-    "config_value": "#4A90E2",
-    "scope": "res",
-    "reseller": "training_reseller1"
-  },
-  {
     "config_name": "PORTAL_CSS_COLOR_MENU_BAR_PRIMARY_1",
     "config_value": "#27AE60",
-    "scope": "res",
     "reseller": "training_reseller1"
   },
   {
     "config_name": "PORTAL_CSS_COLOR_MENU_BAR_PRIMARY_2",
     "config_value": "#F39C12",
-    "scope": "res",
     "reseller": "training_reseller1"
   },
   {
     "config_name": "PORTAL_WEBPHONE_PWA_BACKGROUND_COLOR",
     "config_value": "#8E44AD",
-    "scope": "res",
     "reseller": "training_reseller1"
   },
   {
     "config_name": "PORTAL_WEBPHONE_PWA_THEME_COLOR",
     "config_value": "#E74C3C",
-    "scope": "res",
     "reseller": "training_reseller1"
   },
   {
     "config_name": "PORTAL_THEME_ACCENT",
     "config_value": "#3498DB",
-    "scope": "res",
     "reseller": "training_reseller1"
   },
   {
     "config_name": "PORTAL_THEME_PRIMARY",
     "config_value": "#2ECC71",
-    "scope": "res",
     "reseller": "training_reseller1"
   },
   {
     "config_name": "PORTAL_CSS_PRIMARY_2",
-    "config_value": "#E91E63",
-    "scope": "res",
-    "reseller": "training_reseller2"
-  },
-  {
-    "config_name": "PORTAL_CSS_COLOR_MENU_BAR_PRIMARY_1",
-    "config_value": "#9B59B6",
-    "scope": "res",
+    "config_value": "#1C2526",
     "reseller": "training_reseller2"
   },
   {
     "config_name": "PORTAL_CSS_COLOR_MENU_BAR_PRIMARY_2",
-    "config_value": "#1ABC9C",
-    "scope": "res",
+    "config_value": "#1C2526",
     "reseller": "training_reseller2"
   },
   {
     "config_name": "PORTAL_WEBPHONE_PWA_BACKGROUND_COLOR",
-    "config_value": "#F1C40F",
-    "scope": "res",
+    "config_value": "#1C2526",
     "reseller": "training_reseller2"
   },
   {
     "config_name": "PORTAL_WEBPHONE_PWA_THEME_COLOR",
-    "config_value": "#34495E",
-    "scope": "res",
+    "config_value": "#D9B382",
     "reseller": "training_reseller2"
   },
   {
     "config_name": "PORTAL_THEME_ACCENT",
-    "config_value": "#D35400",
-    "scope": "res",
+    "config_value": "#D9B382",
     "reseller": "training_reseller2"
   },
   {
     "config_name": "PORTAL_THEME_PRIMARY",
-    "config_value": "#16A085",
-    "scope": "res",
+    "config_value": "#1C2526",
     "reseller": "training_reseller2"
   },
   {
     "config_name": "PORTAL_CSS_PRIMARY_2",
     "config_value": "#4A90E2",
-    "scope": "res",
     "reseller": "training_reseller1"
   },
   {
     "config_name": "PORTAL_CSS_COLOR_MENU_BAR_PRIMARY_1",
     "config_value": "#27AE60",
-    "scope": "res",
-    "reseller": "training_reseller1"
-  },
-  {
-    "config_name": "PORTAL_CSS_COLOR_MENU_BAR_PRIMARY_2",
-    "config_value": "#F39C12",
-    "scope": "res",
-    "reseller": "training_reseller1"
-  },
-  {
-    "config_name": "PORTAL_WEBPHONE_PWA_BACKGROUND_COLOR",
-    "config_value": "#8E44AD",
-    "scope": "res",
-    "reseller": "training_reseller1"
-  },
-  {
-    "config_name": "PORTAL_WEBPHONE_PWA_THEME_COLOR",
-    "config_value": "#E74C3C",
-    "scope": "res",
-    "reseller": "training_reseller1"
-  },
-  {
-    "config_name": "PORTAL_THEME_ACCENT",
-    "config_value": "#3498DB",
-    "scope": "res",
-    "reseller": "training_reseller1"
-  },
-  {
-    "config_name": "PORTAL_THEME_PRIMARY",
-    "config_value": "#2ECC71",
-    "scope": "res",
     "reseller": "training_reseller1"
   }
 ]

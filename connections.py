@@ -16,26 +16,24 @@ API_TOKEN = os.getenv("API_TOKEN")
 print(f"Loaded API_TOKEN: {API_TOKEN}")  # Keep for terminal
 logger.info(f"Loaded API_TOKEN: {API_TOKEN}")
 
-def create_connection(custID, description="ThinQ Secondary Orig & 911", translation_source_host=None):
+def create_connection(custID, description="ThinQ Secondary Orig & 911"):
     """
     Create a connection via the API.
     
     Parameters:
       - custID: the host ID (e.g. 'sgdemo')
       - description: a description for the connection
-      - translation_source_host: value for the "connection-translation-source-host" (optional, defaults to https://{custID}.ucaas.tech)
       
     Returns:
       - The response from the API.
     """
-    translation_source_host = f"https://{custID}.ucaas.tech"  # Updated format
     url = f"https://api.{custID}.ucaas.tech/ns-api/v2/connections"
     headers = {
         "accept": "application/json",
         "authorization": f"Bearer {API_TOKEN}",
         "content-type": "application/json"
     }
-    # Build the payload matching your curl data
+    # Build the payload with <AppIP> hardcoded
     payload = {
         "connection-orig-enabled": "yes",
         "connection-term-enabled": "yes",
@@ -76,13 +74,11 @@ def create_connection(custID, description="ThinQ Secondary Orig & 911", translat
         "dial-policy": "Permit All",
         "connection-linked-billing-user": "domain",
         "connection-translation-request-host": "192.81.236.20",
-        #"connection-custom-p-asserted-id-format": "passerted",
-        "connection-translation-source-host": translation_source_host,
+        "connection-translation-source-host": "<AppIP>",
         "utc-offset": "-7",
         "time-zone": "US/Pacific"
     }
     
-    # Log the URL being called for troubleshooting
     print(f"Calling API URL: {url}")  # Keep for terminal
     logger.info(f"Calling API URL: {url} for connection: {description}")
     logger.debug(f"Payload: {json.dumps(payload, indent=2)}")
@@ -100,7 +96,9 @@ def create_connection(custID, description="ThinQ Secondary Orig & 911", translat
         raise
 
 def create_second_connection(custID):
-    translation_source_host = f"https://{custID}.ucaas.tech"  # Updated format
+    """
+    Create a second connection via the API.
+    """
     url = f"https://api.{custID}.ucaas.tech/ns-api/v2/connections"
     headers = {
         "accept": "application/json",
@@ -108,7 +106,6 @@ def create_second_connection(custID):
         "content-type": "application/json"
     }
     
-    # Build the payload matching your second connection's curl data
     payload = {
         "connection-orig-enabled": "yes",
         "connection-term-enabled": "yes",
@@ -149,13 +146,11 @@ def create_second_connection(custID):
         "dial-policy": "Permit All",
         "connection-linked-billing-user": "domain",
         "connection-translation-request-host": "192.81.237.20",
-        #"connection-custom-p-asserted-id-format": "passerted",
-        "connection-translation-source-host": translation_source_host,
+        "connection-translation-source-host": "<AppIP>",
         "utc-offset": "-7",
         "time-zone": "US/Pacific"
     }
     
-    # Log the URL being called for troubleshooting
     print(f"Calling API URL: {url}")  # Keep for terminal
     logger.info(f"Calling API URL: {url} for connection: ThinQ Primary Orig & 911")
     logger.debug(f"Payload: {json.dumps(payload, indent=2)}")
@@ -173,7 +168,9 @@ def create_second_connection(custID):
         raise
 
 def create_outbound_connection(custID):
-    translation_source_host = f"https://{custID}.ucaas.tech"  # Updated format
+    """
+    Create an outbound connection via the API.
+    """
     url = f"https://api.{custID}.ucaas.tech/ns-api/v2/connections"
     headers = {
         "accept": "application/json",
@@ -181,7 +178,6 @@ def create_outbound_connection(custID):
         "content-type": "application/json"
     }
     
-    # Build the payload matching your second connection's curl data
     payload = {
         "connection-orig-enabled": "yes",
         "connection-term-enabled": "yes",
@@ -222,13 +218,11 @@ def create_outbound_connection(custID):
         "dial-policy": "Permit All",
         "connection-linked-billing-user": "domain",
         "connection-translation-request-host": "a.icr.commio.com",
-        #"connection-custom-p-asserted-id-format": "passerted",
-        "connection-translation-source-host": translation_source_host,
+        "connection-translation-source-host": "<AppIP>",
         "utc-offset": "-7",
         "time-zone": "US/Pacific"
     }
     
-    # Log the URL being called for troubleshooting
     print(f"Calling API URL: {url}")  # Keep for terminal
     logger.info(f"Calling API URL: {url} for connection: ThinQ LCR Outbound")
     logger.debug(f"Payload: {json.dumps(payload, indent=2)}")
@@ -255,7 +249,7 @@ if __name__ == "__main__":
     logger.info(f"Host ID entered: {custID}")
     logger.info(f"Connection description entered: {description}")
     
-    # No need to prompt for translation_source_host anymore since it's fixed
+    # Create the connection with <AppIP> hardcoded
     response = create_connection(custID, description)
     if response.status_code in (201, 202):
         print("Connection created successfully")  # Keep for terminal

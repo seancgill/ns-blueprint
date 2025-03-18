@@ -3,9 +3,11 @@ import requests
 import os
 import re
 from dotenv import load_dotenv
+import logging
 from logging_setup import setup_logging
 
 logger = setup_logging()
+logger.setLevel(logging.DEBUG)  # Enable debug logging
 load_dotenv()
 API_TOKEN = os.getenv("API_TOKEN")
 if not API_TOKEN:
@@ -17,7 +19,9 @@ SCOPE_MAPPING = {
     "su": "Super User",
     "res": "Reseller",
     "om": "Office Manager",
-    "adv": "Advanced User"
+    "adv": "Advanced User",
+    "cca": "Call Center Agent",
+    "ccs": "Call Center Supervisor"
 }
 
 UI_CONFIG_PROMPT_COLOR_HEX = {
@@ -46,7 +50,8 @@ NUMERIC_CONFIGS = {
 }
 
 STRING_CONFIGS = [
-    "PORTAL_LOGGED_IN_POWERED_BY"
+    "PORTAL_LOGGED_IN_POWERED_BY",
+    "PORTAL_PHONES_SNAPMOBILE_HOSTID"
 ]
 
 common_payload = {
@@ -130,11 +135,21 @@ def send_configuration(config, api_url, scope=None):
     logger.info(f"Sending configuration {config['config_name']} (Scope: {scope if scope else 'Default'}, Reseller: {payload['reseller']}) to {api_url}")
     logger.debug(f"Payload: {json.dumps(payload, indent=2)}")
     
+    # First attempt with POST
     response = requests.post(api_url, headers=headers, json=payload)
     print(f"POST status code for {config['config_name']} (Scope: {scope if scope else 'Default'}, Reseller: {payload['reseller']}): {response.status_code}")
     logger.info(f"POST status code for {config['config_name']} (Scope: {scope if scope else 'Default'}, Reseller: {payload['reseller']}): {response.status_code}")
     logger.debug(f"Response text: {response.text}")
-    return response
+    
+    # If 409 Conflict, attempt PUT
+    if response.status_code == 409:
+        logger.info(f"Conflict detected for {config['config_name']}, attempting PUT request")
+        response = requests.put(api_url, headers=headers, json=payload)
+        print(f"PUT status code for {config['config_name']} (Scope: {scope if scope else 'Default'}, Reseller: {payload['reseller']}): {response.status_code}")
+        logger.info(f"PUT status code for {config['config_name']} (Scope: {scope if scope else 'Default'}, Reseller: {payload['reseller']}): {response.status_code}")
+        logger.debug(f"PUT Response text: {response.text}")
+    
+    return response.status_code
 
 def update_configurations(customer_name, config_file="ui-configs.json"):
     api_url = get_api_url(customer_name)

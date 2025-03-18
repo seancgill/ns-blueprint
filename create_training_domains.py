@@ -454,7 +454,7 @@ def create_training_domains(custID):
         {"extension": "2007", "email": "reseller@example.com"}
     ]
 
-    # Create resellers and process images
+# Create resellers and process images
     print(f"\n=== Creating resellers for {custID} ===")
     logger.info(f"=== Creating resellers for {custID} ===")
     for reseller_info in resellers:
@@ -468,7 +468,8 @@ def create_training_domains(custID):
             os.makedirs(image_dir)
             print(f"Cleared {image_dir} for {reseller_name}")
             logger.info(f"Cleared {image_dir} for {reseller_name}")
-        process_images(reseller_info["image_path"], custID, reseller_name, local=True)
+        # Exclude 192PWA.png and 512PWA.png for training resellers
+        process_images(reseller_info["image_path"], custID, reseller_name, local=True, exclude_filenames=["192PWA.png", "512PWA.png"])
 
     # Create domains with dial plans matching domain names
     print(f"\n=== Creating domain: {custID} with reseller: {custID}_reseller ===")
