@@ -1,6 +1,7 @@
 import requests
 import json
 import os
+import re
 from dotenv import load_dotenv
 from logging_setup import setup_logging
 
@@ -13,11 +14,12 @@ load_dotenv()
 # Retrieve the API token
 API_TOKEN = os.getenv("API_TOKEN")
 
-print(f"Loaded API_TOKEN: {API_TOKEN}")  # Keep for terminal
+print(f"Loaded API_TOKEN: {API_TOKEN}")
 logger.info(f"Loaded API_TOKEN: {API_TOKEN}")
 
-def create_domain(custID, domain, reseller, description, dial_plan, dial_policy, area_code, caller_id_name, caller_id_number, caller_id_number_emergency):
-    url = f"https://api.{custID}.ucaas.tech/ns-api/v2/domains"
+def create_domain(custID, domain, reseller, description, dial_plan, dial_policy, area_code, caller_id_name, caller_id_number, caller_id_number_emergency, api_url):
+    api_url = api_url.rstrip('/')
+    url = f"{api_url}/ns-api/v2/domains"
     headers = {
         'accept': 'application/json',
         'content-type': 'application/json',
@@ -34,7 +36,6 @@ def create_domain(custID, domain, reseller, description, dial_plan, dial_policy,
         "domain-type": "Standard",
         "dial-plan": dial_plan,
         "dial-policy": dial_policy,
-        #"email-send-from-address": "voicemail@netsapiens.com",
         "single-sign-on-enabled": "no",
         "area-code": area_code,
         "caller-id-name": caller_id_name,
@@ -46,7 +47,7 @@ def create_domain(custID, domain, reseller, description, dial_plan, dial_policy,
         "is-ivr-forward-change-blocked": "no"
     }
     
-    print(f"Calling API URL: {url}")  # Keep for terminal
+    print(f"Calling API URL: {url}")
     logger.info(f"Calling API URL: {url} to create domain: {domain}")
     logger.debug(f"Payload: {json.dumps(data, indent=2)}")
     
@@ -54,24 +55,23 @@ def create_domain(custID, domain, reseller, description, dial_plan, dial_policy,
         response = requests.post(url, headers=headers, data=json.dumps(data))
         
         if response.status_code in [200, 201, 202]:
-            print("Domain created successfully")  # Keep for terminal
+            print("Domain created successfully")
             logger.info(f"Domain '{domain}' created successfully with status code: {response.status_code}")
         else:
-            print(f"Failed to create domain: {response.status_code}")  # Keep for terminal
+            print(f"Failed to create domain: {response.status_code}")
             logger.error(f"Failed to create domain '{domain}': {response.status_code}")
         
-        print(response.text)  # Keep for terminal
+        print(response.text)
         logger.debug(f"Response text: {response.text}")
         
     except requests.exceptions.RequestException as e:
-        print(f"Error calling {url}: {e}")  # Keep for terminal
+        print(f"Error calling {url}: {e}")
         logger.error(f"Error calling {url} to create domain '{domain}': {e}")
 
 if __name__ == "__main__":
-    print("Starting domain creation script")  # Keep for terminal
+    print("Starting domain creation script")
     logger.info("Starting domain creation script")
     
-    # Example inputs (you can modify these or prompt the user)
     custID = input("Enter the customer ID (e.g., sgdemo): ").strip()
     domain = input("Enter the domain name: ").strip()
     reseller = input("Enter the reseller name: ").strip()
@@ -82,6 +82,12 @@ if __name__ == "__main__":
     caller_id_name = input("Enter the caller ID name: ").strip()
     caller_id_number = input("Enter the caller ID number: ").strip()
     caller_id_number_emergency = input("Enter the emergency caller ID number: ").strip()
+    api_url = input("Enter the full API URL (e.g., https://api.example.ucaas.tech): ").strip()
+    
+    if not re.match(r"^https?://[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", api_url):
+        print("Invalid API URL. Please enter a valid URL (e.g., https://api.example.ucaas.tech).")
+        logger.error(f"Invalid API URL provided: {api_url}")
+        exit(1)
     
     logger.info(f"Customer ID entered: {custID}")
     logger.info(f"Domain entered: {domain}")
@@ -93,8 +99,9 @@ if __name__ == "__main__":
     logger.info(f"Caller ID name entered: {caller_id_name}")
     logger.info(f"Caller ID number entered: {caller_id_number}")
     logger.info(f"Emergency caller ID number entered: {caller_id_number_emergency}")
+    logger.info(f"API URL entered: {api_url}")
     
-    create_domain(custID, domain, reseller, description, dial_plan, dial_policy, area_code, caller_id_name, caller_id_number, caller_id_number_emergency)
+    create_domain(custID, domain, reseller, description, dial_plan, dial_policy, area_code, caller_id_name, caller_id_number, caller_id_number_emergency, api_url)
     
-    print("Domain creation script completed")  # Keep for terminal
+    print("Domain creation script completed")
     logger.info("Domain creation script completed")

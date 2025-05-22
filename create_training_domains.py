@@ -2,6 +2,7 @@ import requests
 import json
 import os
 import shutil
+import re
 from dotenv import load_dotenv
 from logging_setup import setup_logging
 from create_image import create_image, process_images
@@ -17,8 +18,9 @@ API_TOKEN = os.getenv("API_TOKEN")
 print(f"Loaded API_TOKEN: {API_TOKEN}")
 logger.info(f"Loaded API_TOKEN: {API_TOKEN}")
 
-def create_reseller(custID, reseller, description="Training reseller created via API"):
-    url = f"https://api.{custID}.ucaas.tech/ns-api/v2/resellers"
+def create_reseller(custID, reseller, api_url, description="Training reseller created via API"):
+    api_url = api_url.rstrip('/')
+    url = f"{api_url}/ns-api/v2/resellers"
     headers = {
         'accept': '*/*',
         'content-type': 'application/json',
@@ -51,8 +53,9 @@ def create_reseller(custID, reseller, description="Training reseller created via
         print(f"Error calling {url}: {e}")
         logger.error(f"Error calling {url} to create reseller '{reseller}': {e}")
 
-def create_domain(custID, domain, reseller, description, dial_plan, dial_policy):
-    url = f"https://api.{custID}.ucaas.tech/ns-api/v2/domains"
+def create_domain(custID, domain, reseller, description, dial_plan, dial_policy, api_url):
+    api_url = api_url.rstrip('/')
+    url = f"{api_url}/ns-api/v2/domains"
     headers = {
         'accept': 'application/json',
         'content-type': 'application/json',
@@ -93,8 +96,9 @@ def create_domain(custID, domain, reseller, description, dial_plan, dial_policy)
         print(f"Error calling {url}: {e}")
         logger.error(f"Error calling {url} to create domain '{domain}': {e}")
 
-def create_user(custID, domain, extension, first_name, last_name, email, user_scope):
-    url = f"https://api.{custID}.ucaas.tech/ns-api/v2/domains/{domain}/users"
+def create_user(custID, domain, extension, first_name, last_name, email, user_scope, api_url):
+    api_url = api_url.rstrip('/')
+    url = f"{api_url}/ns-api/v2/domains/{domain}/users"
     headers = {
         'accept': 'application/json',
         'content-type': 'application/json',
@@ -165,8 +169,9 @@ def create_user(custID, domain, extension, first_name, last_name, email, user_sc
         print(f"Error calling {url}: {e}")
         logger.error(f"Error calling {url} to create user '{first_name} {last_name}' (Ext: {extension}): {e}")
 
-def create_device(custID, domain, extension):
-    url = f"https://api.{custID}.ucaas.tech/ns-api/v2/domains/{domain}/users/{extension}/devices"
+def create_device(custID, domain, extension, api_url):
+    api_url = api_url.rstrip('/')
+    url = f"{api_url}/ns-api/v2/domains/{domain}/users/{extension}/devices"
     headers = {
         'accept': 'application/json',
         'content-type': 'application/json',
@@ -213,54 +218,9 @@ def create_device(custID, domain, extension):
         print(f"Error calling {url}: {e}")
         logger.error(f"Error calling {url} to create device for extension {extension}: {e}")
 
-# API v2 call park is broken
-# def create_call_park(custID, domain, callqueue, description):
-#     url = f"https://api.{custID}.ucaas.tech/ns-api/v2/domains/{domain}/callqueues"
-#     headers = {
-#         'accept': '*/*',
-#         'content-type': 'application/json',
-#         'Authorization': f'Bearer {API_TOKEN}'
-#     }
-#     data = {
-#         "synchronous": "no",
-#         "callqueue": callqueue,
-#         "description": description,
-#         "callqueue-dispatch-type": "Call Park",
-#         "callqueue-calculate-statistics": "no",
-#         "callqueue-agent-dispatch-timeout-seconds": 0,
-#         "callqueue-max-current-callers-to-accept-new-callers": 1,
-#         "callqueue-max-wait-timeout-minutes": 60,
-#         "site": "",
-#         "subscriber_group": ""
-#     }
-#     print(f"Calling API URL: {url}")
-#     logger.info(f"Calling API URL: {url} to create call park: {callqueue}")
-#     print(f"Request payload: {json.dumps(data, indent=2)}")
-#     logger.debug(f"Request payload: {json.dumps(data, indent=2)}")
-#     try:
-#         response = requests.post(url, headers=headers, data=json.dumps(data))
-#         print(f"Status Code: {response.status_code}")
-#         logger.info(f"Status Code: {response.status_code} for call park: {callqueue}")
-#         if response.status_code in [200, 201, 202]:
-#             print(f"Call park {callqueue} ({description}) created successfully")
-#             logger.info(f"Call park '{callqueue}' ({description}) created successfully with status code: {response.status_code}")
-#         elif response.status_code == 409:
-#             print(f"Call park {callqueue} already exists, attempting update")
-#             logger.info(f"Call park '{callqueue}' already exists, attempting update (Status: 409)")
-#             response = requests.put(url, headers=headers, data=json.dumps(data))
-#             print(f"PUT Status Code: {response.status_code} for updating call park: {callqueue}")
-#             logger.info(f"PUT Status Code: {response.status_code} for updating call park: {callqueue}")
-#         else:
-#             print(f"Failed to create call park {callqueue}: {response.status_code}")
-#             logger.error(f"Failed to create call park '{callqueue}': {response.status_code}")
-#         print(response.text)
-#         logger.debug(f"Response text: {response.text}")
-#     except requests.exceptions.RequestException as e:
-#         print(f"Error calling {url}: {e}")
-#         logger.error(f"Error calling {url} to create call park '{callqueue}': {e}")
-
-def create_call_park(custID, domain, callqueue, description):
-    url = f"https://core1-ord.{custID}.ucaas.tech/ns-api/"
+def create_call_park(custID, domain, callqueue, description, api_url):
+    api_url = api_url.rstrip('/')
+    url = f"{api_url}/ns-api/"
     headers = {
         'accept': '*/*',
         'Authorization': f'Bearer {API_TOKEN}'
@@ -320,8 +280,9 @@ def create_call_park(custID, domain, callqueue, description):
         print(f"Error calling {url}: {e}")
         logger.error(f"Error calling {url} to create call park '{callqueue}': {e}")
 
-def create_call_queue(custID, domain, callqueue, description, dispatch_type="Ring All"):
-    url = f"https://api.{custID}.ucaas.tech/ns-api/v2/domains/{domain}/callqueues"
+def create_call_queue(custID, domain, callqueue, description, api_url, dispatch_type="Ring All"):
+    api_url = api_url.rstrip('/')
+    url = f"{api_url}/ns-api/v2/domains/{domain}/callqueues"
     headers = {
         'accept': '*/*',
         'content-type': 'application/json',
@@ -359,8 +320,9 @@ def create_call_queue(custID, domain, callqueue, description, dispatch_type="Rin
         print(f"Error calling {url}: {e}")
         logger.error(f"Error calling {url} to create call queue '{callqueue}': {e}")
 
-def add_agent_to_call_queue(custID, domain, callqueue, agent_extension):
-    url = f"https://api.{custID}.ucaas.tech/ns-api/v2/domains/{domain}/callqueues/{callqueue}/agents"
+def add_agent_to_call_queue(custID, domain, callqueue, agent_extension, api_url):
+    api_url = api_url.rstrip('/')
+    url = f"{api_url}/ns-api/v2/domains/{domain}/callqueues/{callqueue}/agents"
     headers = {
         'accept': 'application/json',
         'content-type': 'application/json',
@@ -368,7 +330,6 @@ def add_agent_to_call_queue(custID, domain, callqueue, agent_extension):
     }
     agent_id = f"{agent_extension}@{domain}"
 
-    # Check if agent is already in the queue
     print(f"Checking if agent {agent_extension} is already in call queue {callqueue}")
     logger.info(f"Checking if agent {agent_extension} is already in call queue {callqueue}")
     try:
@@ -379,7 +340,7 @@ def add_agent_to_call_queue(custID, domain, callqueue, agent_extension):
                 if agent.get("callqueue-agent-id") == agent_id:
                     print(f"Agent {agent_extension} already exists in call queue {callqueue}, skipping")
                     logger.info(f"Agent '{agent_extension}' already exists in call queue '{callqueue}', skipping")
-                    return  # Skip adding if agent is found
+                    return
         else:
             print(f"Failed to fetch agents for queue {callqueue}: {get_response.status_code}")
             logger.warning(f"Failed to fetch agents for queue {callqueue}: {get_response.status_code}")
@@ -387,7 +348,6 @@ def add_agent_to_call_queue(custID, domain, callqueue, agent_extension):
         print(f"Error checking agents for queue {callqueue}: {e}")
         logger.error(f"Error checking agents for queue {callqueue}: {e}")
 
-    # Add agent if not found
     data = {
         "synchronous": "no",
         "callqueue-agent-wrap-up-allowance-seconds": 0,
@@ -417,7 +377,7 @@ def add_agent_to_call_queue(custID, domain, callqueue, agent_extension):
         print(f"Error calling {url}: {e}")
         logger.error(f"Error calling {url} to add agent '{agent_extension}' to call queue '{callqueue}': {e}")
 
-def create_training_domains(custID):
+def create_training_domains(custID, api_url):
     resellers = [
         {"name": "training_reseller1", "description": "Training reseller 1 created via API", "image_path": "reseller_images/reseller-one-logo.jpeg"},
         {"name": "training_reseller2", "description": "Training reseller 2 created via API", "image_path": "reseller_images/reseller-two-logo.jpg"}
@@ -454,12 +414,11 @@ def create_training_domains(custID):
         {"extension": "2007", "email": "reseller@example.com"}
     ]
 
-# Create resellers and process images
     print(f"\n=== Creating resellers for {custID} ===")
     logger.info(f"=== Creating resellers for {custID} ===")
     for reseller_info in resellers:
         reseller_name = reseller_info["name"]
-        create_reseller(custID, reseller_name, reseller_info["description"])
+        create_reseller(custID, reseller_name, api_url, reseller_info["description"])
         print(f"\n=== Processing images for reseller {reseller_name} ===")
         logger.info(f"=== Processing images for reseller {reseller_name} ===")
         image_dir = "image_files"
@@ -468,20 +427,18 @@ def create_training_domains(custID):
             os.makedirs(image_dir)
             print(f"Cleared {image_dir} for {reseller_name}")
             logger.info(f"Cleared {image_dir} for {reseller_name}")
-        # Exclude 192PWA.png and 512PWA.png for training resellers
         process_images(reseller_info["image_path"], custID, reseller_name, local=True, exclude_filenames=["192PWA.png", "512PWA.png"])
 
-    # Create domains with dial plans matching domain names
     print(f"\n=== Creating domain: {custID} with reseller: {custID}_reseller ===")
     logger.info(f"=== Creating domain: {custID} with reseller: {custID}_reseller ===")
-    create_domain(custID, custID, f"{custID}_reseller", 'made via api', custID, dial_policy)
+    create_domain(custID, custID, f"{custID}_reseller", 'made via api', custID, dial_policy, api_url)
 
     for domain_info in domains:
         domain = domain_info["name"]
         reseller = domain_info["reseller"]
         print(f"\n=== Creating domain: {domain} with reseller: {reseller} ===")
         logger.info(f"=== Creating domain: {domain} with reseller: {reseller} ===")
-        create_domain(custID, domain, reseller, description, domain, dial_policy)
+        create_domain(custID, domain, reseller, description, domain, dial_policy, api_url)
 
         print(f"\n=== Creating users and devices for {domain} ===")
         logger.info(f"=== Creating users and devices for {domain} ===")
@@ -492,30 +449,39 @@ def create_training_domains(custID):
             last_name = "User" if len(scope_parts) == 1 else " ".join(scope_parts[1:])
             print(f"\nCreating user {user['extension']} with scope {scope}")
             logger.info(f"Creating user {user['extension']} with scope {scope}")
-            create_user(custID, domain, user["extension"], first_name, last_name, user["email"], scope)
-            create_device(custID, domain, user["extension"])
+            create_user(custID, domain, user["extension"], first_name, last_name, user["email"], scope, api_url)
+            create_device(custID, domain, user["extension"], api_url)
 
         print(f"\n=== Creating call parks for {domain} ===")
         logger.info(f"=== Creating call parks for {domain} ===")
         for park in call_parks:
-            create_call_park(custID, domain, park["callqueue"], park["description"])
+            create_call_park(custID, domain, park["callqueue"], park["description"], api_url)
 
         print(f"\n=== Creating call queues for {domain} ===")
         logger.info(f"=== Creating call queues for {domain} ===")
         for queue in call_queues:
-            create_call_queue(custID, domain, queue["callqueue"], queue["description"])
+            create_call_queue(custID, domain, queue["callqueue"], queue["description"], api_url)
 
         print(f"\n=== Adding agents to call queues for {domain} ===")
         logger.info(f"=== Adding agents to call queues for {domain} ===")
         for queue in call_queues:
             for agent_extension in agent_extensions:
-                add_agent_to_call_queue(custID, domain, queue["callqueue"], agent_extension)
+                add_agent_to_call_queue(custID, domain, queue["callqueue"], agent_extension, api_url)
 
 if __name__ == "__main__":
+    import re
     print("Starting training domains creation script")
     logger.info("Starting training domains creation script")
     custID = input("Enter the customer domain (e.g., sgdemo): ").strip()
+    api_url = input("Enter the full API URL (e.g., https://api.example.ucaas.tech): ").strip()
+    
+    if not re.match(r"^https?://[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", api_url):
+        print("Invalid API URL. Please enter a valid URL (e.g., https://api.example.ucaas.tech).")
+        logger.error(f"Invalid API URL provided: {api_url}")
+        exit(1)
+    
     logger.info(f"Customer domain entered: {custID}")
-    create_training_domains(custID)
+    logger.info(f"API URL entered: {api_url}")
+    create_training_domains(custID, api_url)
     print("Training domains creation script completed")
     logger.info("Training domains creation script completed")

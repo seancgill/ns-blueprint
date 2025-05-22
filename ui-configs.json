@@ -41,11 +41,15 @@
   },
   {
     "config_name": "MOBILE_REGISTRATION_SERVER",
-    "config_value": "_sip._tls.custID.ucaas.tech"
+    "config_value": "_sip._tls.core1-ord.custID.ucaas.tech:5061"
   },
   {
     "config_name": "PORTAL_FQDN",
     "config_value": "portal.custID.ucaas.tech"
+  },
+  {
+    "config_name": "PORTAL_AGENT_SHOW_AGENT_ACW",
+    "config_value": "yes"
   },
   {
     "config_name": "PORTAL_USERS_ALLOW_RECORDING",
@@ -213,6 +217,22 @@
   },
   {
     "config_name": "PORTAL_PHONES_SNAPMOBILE_HOSTID",
+    "config_value": ""
+  },
+  {
+    "config_name": "PORTAL_PHONES_SNAPMOBILE_ALLOW",
+    "config_value": "yes"
+  },
+  {
+    "config_name": "PORTAL_PHONES_SNAPMOBILE_TITLE",
+    "config_value": ""
+  },
+  {
+    "config_name": "MOBILE_IOS_FEEDBACK_EMAIL",
+    "config_value": ""
+  },
+  {
+    "config_name": "MOBILE_ANDROID_FEEDBACK_EMAIL",
     "config_value": ""
   },
   {

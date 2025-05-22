@@ -7,12 +7,11 @@ import logging
 from logging_setup import setup_logging
 
 logger = setup_logging()
-logger.setLevel(logging.DEBUG)  # Enable debug logging
+logger.setLevel(logging.DEBUG)
 load_dotenv()
 API_TOKEN = os.getenv("API_TOKEN")
 if not API_TOKEN:
     raise ValueError("Missing API token. Set NETSAPIENS_API_TOKEN as an environment variable.")
-print(f"Loaded API_TOKEN: {API_TOKEN}")
 logger.info(f"Loaded API_TOKEN: {API_TOKEN}")
 
 SCOPE_MAPPING = {
@@ -51,7 +50,10 @@ NUMERIC_CONFIGS = {
 
 STRING_CONFIGS = [
     "PORTAL_LOGGED_IN_POWERED_BY",
-    "PORTAL_PHONES_SNAPMOBILE_HOSTID"
+    "PORTAL_PHONES_SNAPMOBILE_HOSTID",
+    "PORTAL_PHONES_SNAPMOBILE_TITLE",
+    "MOBILE_IOS_FEEDBACK_EMAIL",
+    "MOBILE_ANDROID_FEEDBACK_EMAIL"
 ]
 
 common_payload = {
@@ -70,16 +72,14 @@ headers = {
     "content-type": "application/json"
 }
 
-def get_api_url(customer_name):
-    return f"https://api.{customer_name}.ucaas.tech/ns-api/v2/configurations"
-
-def load_configurations(filename, customer_name):
+def load_configurations(filename, customer_name=None):
     with open(filename, 'r') as file:
         configs = json.load(file)
-    for config in configs:
-        if isinstance(config.get("config_value"), str):
-            config["config_value"] = config["config_value"].replace("custID", customer_name)
-    logger.info(f"Loaded configurations from {filename} with customer_name: {customer_name}")
+    if customer_name:
+        for config in configs:
+            if isinstance(config.get("config_value"), str):
+                config["config_value"] = config["config_value"].replace("custID", customer_name)
+    logger.info(f"Loaded configurations from {filename}" + (f" with customer_name: {customer_name}" if customer_name else ""))
     logger.debug(f"Configurations: {json.dumps(configs, indent=2)}")
     return configs
 
@@ -132,27 +132,28 @@ def send_configuration(config, api_url, scope=None):
     if "reseller" in config:
         payload["reseller"] = config["reseller"]
     
-    logger.info(f"Sending configuration {config['config_name']} (Scope: {scope if scope else 'Default'}, Reseller: {payload['reseller']}) to {api_url}")
+    url = f"{api_url}/ns-api/v2/configurations"
+    logger.info(f"Sending configuration {config['config_name']} (Scope: {scope if scope else 'Default'}, Reseller: {payload['reseller']}) to {url}")
     logger.debug(f"Payload: {json.dumps(payload, indent=2)}")
     
-    # First attempt with POST
-    response = requests.post(api_url, headers=headers, json=payload)
+    response = requests.post(url, headers=headers, json=payload)
     print(f"POST status code for {config['config_name']} (Scope: {scope if scope else 'Default'}, Reseller: {payload['reseller']}): {response.status_code}")
     logger.info(f"POST status code for {config['config_name']} (Scope: {scope if scope else 'Default'}, Reseller: {payload['reseller']}): {response.status_code}")
     logger.debug(f"Response text: {response.text}")
     
-    # If 409 Conflict, attempt PUT
     if response.status_code == 409:
         logger.info(f"Conflict detected for {config['config_name']}, attempting PUT request")
-        response = requests.put(api_url, headers=headers, json=payload)
+        response = requests.put(url, headers=headers, json=payload)
         print(f"PUT status code for {config['config_name']} (Scope: {scope if scope else 'Default'}, Reseller: {payload['reseller']}): {response.status_code}")
         logger.info(f"PUT status code for {config['config_name']} (Scope: {scope if scope else 'Default'}, Reseller: {payload['reseller']}): {response.status_code}")
         logger.debug(f"PUT Response text: {response.text}")
     
     return response.status_code
 
-def update_configurations(customer_name, config_file="ui-configs.json"):
-    api_url = get_api_url(customer_name)
+def update_configurations(customer_name=None, config_file="ui-configs.json", api_url=None):
+    if not api_url:
+        raise ValueError("API URL must be provided")
+    
     print(f"Using API URL: {api_url}")
     logger.info(f"Using API URL: {api_url}")
 
@@ -161,7 +162,6 @@ def update_configurations(customer_name, config_file="ui-configs.json"):
         config_name = config["config_name"]
         current_value = config["config_value"]
         
-        # Prompt only for system defaults (no reseller field)
         if "reseller" not in config:
             if config_name in UI_CONFIG_PROMPT_COLOR_HEX:
                 config["config_value"] = prompt_for_color(config_name, current_value, UI_CONFIG_PROMPT_COLOR_HEX[config_name])
@@ -172,10 +172,9 @@ def update_configurations(customer_name, config_file="ui-configs.json"):
             elif config_name in STRING_CONFIGS:
                 config["config_value"] = prompt_for_string(config_name, current_value)
         
-        # Handle scopes (split comma-separated values)
         scopes = config.get("scopes", []) if "scopes" in config else config.get("scope", [])
         if isinstance(scopes, str):
-            scopes = [scope.strip() for scope in scopes.split(",")]  # Split by comma and strip whitespace
+            scopes = [scope.strip() for scope in scopes.split(",")]
         
         if scopes:
             for scope in scopes:
@@ -186,17 +185,22 @@ def update_configurations(customer_name, config_file="ui-configs.json"):
 
 if __name__ == "__main__":
     import sys
-    print("Starting UI configurations update script")
-    logger.info("Starting UI configurations update script")
+    print("Starting UI configurations update script (standalone mode)")
+    logger.info("Starting UI configurations update script (standalone mode)")
     
-    if len(sys.argv) < 2:
-        print("Usage: python ui_configs.py <customer_name>")
-        logger.error("Missing customer_name argument. Usage: python ui_configs.py <customer_name>")
+    api_url = input("Enter the full API URL (e.g., https://api.example.ucaas.tech): ").strip()
+    if not re.match(r"^https?://[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", api_url):
+        print("Invalid API URL. Please enter a valid URL (e.g., https://api.example.ucaas.tech).")
+        logger.error(f"Invalid API URL provided: {api_url}")
         sys.exit(1)
     
-    customer_name = sys.argv[1]
-    logger.info(f"Customer name provided: {customer_name}")
-    update_configurations(customer_name)
+    config_file = sys.argv[1] if len(sys.argv) > 1 else "ui-configs.json"
     
-    print("UI configurations update script completed")
-    logger.info("UI configurations update script completed")
+    try:
+        update_configurations(config_file=config_file, api_url=api_url)
+        print("UI configurations update script completed")
+        logger.info("UI configurations update script completed")
+    except Exception as e:
+        print(f"Error: {e}")
+        logger.error(f"Script failed: {e}")
+        sys.exit(1)

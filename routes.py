@@ -1,5 +1,3 @@
-# route_manager.py
-
 import requests
 import json
 import os
@@ -15,23 +13,12 @@ load_dotenv()
 # Retrieve the API token
 API_TOKEN = os.getenv("API_TOKEN")
 
-print(f"Loaded API_TOKEN: {API_TOKEN}")  # Keep for terminal
+print(f"Loaded API_TOKEN: {API_TOKEN}")
 logger.info(f"Loaded API_TOKEN: {API_TOKEN}")
 
-def create_us_domestic_route(custID, match_to="sip:1??????????@*", con_host="a.icr.commio.com", con_index="1"):
-    """
-    Create a new route for US domestic calls pointing to the ThinQ LCR Outbound connection.
-    
-    Parameters:
-      - custID: The host ID (e.g., 'sgdemo')
-      - match_to: The pattern to match (default: US domestic numbers)
-      - con_host: The target connection host (default: ThinQ LCR Outbound)
-      - con_index: The connection index (default: "1")
-    
-    Returns:
-      - The response from the API
-    """
-    url = f"https://api.{custID}.ucaas.tech/ns-api/v2/routecon"
+def create_us_domestic_route(custID, api_url, match_to="sip:1??????????@*", con_host="a.icr.commio.com", con_index="1"):
+    api_url = api_url.rstrip('/')
+    url = f"{api_url}/ns-api/v2/routecon"
     headers = {
         "accept": "application/json",
         "authorization": f"Bearer {API_TOKEN}",
@@ -43,51 +30,53 @@ def create_us_domestic_route(custID, match_to="sip:1??????????@*", con_host="a.i
         "con_host": con_host
     }
 
-    print(f"Creating route at: {url}")  # Keep for terminal
+    print(f"Creating route at: {url}")
     logger.info(f"Creating route at: {url}")
     logger.debug(f"Payload: {json.dumps(payload, indent=2)}")
 
     try:
         response = requests.post(url, headers=headers, json=payload)
-        print(f"Status Code: {response.status_code}")  # Keep for terminal
+        print(f"Status Code: {response.status_code}")
         logger.info(f"Status Code: {response.status_code} for route creation")
         logger.debug(f"Response text: {response.text}")
         return response
     except requests.exceptions.RequestException as e:
         logger.error(f"Error creating route at {url}: {e}")
-        print(f"Error creating route at {url}: {e}")  # Keep for terminal
+        print(f"Error creating route at {url}: {e}")
         raise
 
-def manage_us_domestic_route(custID):
-    """
-    Main function to manage the US domestic route by creating it to point to ThinQ LCR Outbound.
-    
-    Parameters:
-      - custID: The host ID (e.g., 'sgdemo')
-    """
-    print("Starting US domestic route management")  # Keep for terminal
+def manage_us_domestic_route(custID, api_url):
+    print("Starting US domestic route management")
     logger.info("Starting US domestic route management")
 
-    # Create the route for US domestic calls
-    response = create_us_domestic_route(custID)
+    response = create_us_domestic_route(custID, api_url)
     if response.status_code in (201, 202):
-        print("US Domestic route created successfully to ThinQ LCR Outbound")  # Keep for terminal
+        print("US Domestic route created successfully to ThinQ LCR Outbound")
         logger.info(f"US Domestic route created successfully with status code: {response.status_code}")
     elif response.status_code == 409:
-        print("Route already exists. No changes made.")  # Keep for terminal
+        print("Route already exists. No changes made.")
         logger.info("Route already exists. No changes made.")
     else:
-        print(f"Failed to create US Domestic route: {response.status_code} - {response.text}")  # Keep for terminal
+        print(f"Failed to create US Domestic route: {response.status_code} - {response.text}")
         logger.error(f"Failed to create US Domestic route: {response.status_code} - {response.text}")
 
-    print("US domestic route management completed")  # Keep for terminal
+    print("US domestic route management completed")
     logger.info("US domestic route management completed")
 
 if __name__ == "__main__":
-    print("Starting route management script")  # Keep for terminal
+    import re
+    print("Starting route management script")
     logger.info("Starting route management script")
 
     custID = input("Enter the host ID (e.g., sgdemo): ").strip()
+    api_url = input("Enter the full API URL (e.g., https://api.example.ucaas.tech): ").strip()
+    
+    if not re.match(r"^https?://[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", api_url):
+        print("Invalid API URL. Please enter a valid URL (e.g., https://api.example.ucaas.tech).")
+        logger.error(f"Invalid API URL provided: {api_url}")
+        exit(1)
+    
     logger.info(f"Host ID entered: {custID}")
+    logger.info(f"API URL entered: {api_url}")
 
-    manage_us_domestic_route(custID)
+    manage_us_domestic_route(custID, api_url)

@@ -13,27 +13,17 @@ load_dotenv()
 # Retrieve the API token
 API_TOKEN = os.getenv("API_TOKEN")
 
-print(f"Loaded API_TOKEN: {API_TOKEN}")  # Keep for terminal
+print(f"Loaded API_TOKEN: {API_TOKEN}")
 logger.info(f"Loaded API_TOKEN: {API_TOKEN}")
 
-def create_connection(custID, description="ThinQ Secondary Orig & 911"):
-    """
-    Create a connection via the API.
-    
-    Parameters:
-      - custID: the host ID (e.g. 'sgdemo')
-      - description: a description for the connection
-      
-    Returns:
-      - The response from the API.
-    """
-    url = f"https://api.{custID}.ucaas.tech/ns-api/v2/connections"
+def create_connection(custID, api_url, description="ThinQ Secondary Orig & 911"):
+    api_url = api_url.rstrip('/')
+    url = f"{api_url}/ns-api/v2/connections"
     headers = {
         "accept": "application/json",
         "authorization": f"Bearer {API_TOKEN}",
         "content-type": "application/json"
     }
-    # Build the payload with <AppIP> hardcoded
     payload = {
         "connection-orig-enabled": "yes",
         "connection-term-enabled": "yes",
@@ -79,27 +69,25 @@ def create_connection(custID, description="ThinQ Secondary Orig & 911"):
         "time-zone": "US/Pacific"
     }
     
-    print(f"Calling API URL: {url}")  # Keep for terminal
+    print(f"Calling API URL: {url}")
     logger.info(f"Calling API URL: {url} for connection: {description}")
     logger.debug(f"Payload: {json.dumps(payload, indent=2)}")
     
     try:
         response = requests.post(url, headers=headers, json=payload)
-        print(f"Status Code: {response.status_code}")  # Keep for terminal
+        print(f"Status Code: {response.status_code}")
         logger.info(f"Status Code: {response.status_code} for connection: {description}")
         logger.debug(f"Response text: {response.text}")
         return response
     except requests.exceptions.RequestException as e:
-        print(f"Error calling {url} with payload {payload}")  # Keep for terminal
-        print(f"Exception: {e}")  # Keep for terminal
+        print(f"Error calling {url} with payload {payload}")
+        print(f"Exception: {e}")
         logger.error(f"Error calling {url} for connection: {description}: {e}")
         raise
 
-def create_second_connection(custID):
-    """
-    Create a second connection via the API.
-    """
-    url = f"https://api.{custID}.ucaas.tech/ns-api/v2/connections"
+def create_second_connection(custID, api_url):
+    api_url = api_url.rstrip('/')
+    url = f"{api_url}/ns-api/v2/connections"
     headers = {
         "accept": "application/json",
         "authorization": f"Bearer {API_TOKEN}",
@@ -151,27 +139,25 @@ def create_second_connection(custID):
         "time-zone": "US/Pacific"
     }
     
-    print(f"Calling API URL: {url}")  # Keep for terminal
+    print(f"Calling API URL: {url}")
     logger.info(f"Calling API URL: {url} for connection: ThinQ Primary Orig & 911")
     logger.debug(f"Payload: {json.dumps(payload, indent=2)}")
     
     try:
         response = requests.post(url, headers=headers, json=payload)
-        print(f"Status Code: {response.status_code}")  # Keep for terminal
+        print(f"Status Code: {response.status_code}")
         logger.info(f"Status Code: {response.status_code} for connection: ThinQ Primary Orig & 911")
         logger.debug(f"Response text: {response.text}")
         return response
     except requests.exceptions.RequestException as e:
-        print(f"Error calling {url} with payload {payload}")  # Keep for terminal
-        print(f"Exception: {e}")  # Keep for terminal
+        print(f"Error calling {url} with payload {payload}")
+        print(f"Exception: {e}")
         logger.error(f"Error calling {url} for connection: ThinQ Primary Orig & 911: {e}")
         raise
 
-def create_outbound_connection(custID):
-    """
-    Create an outbound connection via the API.
-    """
-    url = f"https://api.{custID}.ucaas.tech/ns-api/v2/connections"
+def create_outbound_connection(custID, api_url):
+    api_url = api_url.rstrip('/')
+    url = f"{api_url}/ns-api/v2/connections"
     headers = {
         "accept": "application/json",
         "authorization": f"Bearer {API_TOKEN}",
@@ -223,42 +209,49 @@ def create_outbound_connection(custID):
         "time-zone": "US/Pacific"
     }
     
-    print(f"Calling API URL: {url}")  # Keep for terminal
+    print(f"Calling API URL: {url}")
     logger.info(f"Calling API URL: {url} for connection: ThinQ LCR Outbound")
     logger.debug(f"Payload: {json.dumps(payload, indent=2)}")
     
     try:
         response = requests.post(url, headers=headers, json=payload)
-        print(f"Status Code: {response.status_code}")  # Keep for terminal
+        print(f"Status Code: {response.status_code}")
         logger.info(f"Status Code: {response.status_code} for connection: ThinQ LCR Outbound")
         logger.debug(f"Response text: {response.text}")
         return response
     except requests.exceptions.RequestException as e:
-        print(f"Error calling {url} with payload {payload}")  # Keep for terminal
-        print(f"Exception: {e}")  # Keep for terminal
+        print(f"Error calling {url} with payload {payload}")
+        print(f"Exception: {e}")
         logger.error(f"Error calling {url} for connection: ThinQ LCR Outbound: {e}")
         raise
 
 if __name__ == "__main__":
-    print("Starting connection creation script")  # Keep for terminal
+    import re
+    print("Starting connection creation script")
     logger.info("Starting connection creation script")
     
-    # Prompt user for necessary inputs
     custID = input("Enter the host ID (e.g., sgdemo): ").strip()
     description = input("Enter the connection description: ").strip()
+    api_url = input("Enter the full API URL (e.g., https://api.example.ucaas.tech): ").strip()
+    
+    if not re.match(r"^https?://[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", api_url):
+        print("Invalid API URL. Please enter a valid URL (e.g., https://api.example.ucaas.tech).")
+        logger.error(f"Invalid API URL provided: {api_url}")
+        exit(1)
+    
     logger.info(f"Host ID entered: {custID}")
     logger.info(f"Connection description entered: {description}")
+    logger.info(f"API URL entered: {api_url}")
     
-    # Create the connection with <AppIP> hardcoded
-    response = create_connection(custID, description)
+    response = create_connection(custID, api_url, description)
     if response.status_code in (201, 202):
-        print("Connection created successfully")  # Keep for terminal
+        print("Connection created successfully")
         logger.info(f"Connection '{description}' created successfully with status code: {response.status_code}")
     else:
-        print(f"Failed to create connection: {response.status_code}")  # Keep for terminal
-        print(response.text)  # Keep for terminal
+        print(f"Failed to create connection: {response.status_code}")
+        print(response.text)
         logger.error(f"Failed to create connection '{description}': {response.status_code}")
         logger.debug(f"Response text: {response.text}")
     
-    print("Connection creation script completed")  # Keep for terminal
+    print("Connection creation script completed")
     logger.info("Connection creation script completed")

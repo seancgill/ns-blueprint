@@ -13,18 +13,16 @@ load_dotenv(override=True)
 
 # Retrieve the API token
 API_TOKEN = os.getenv("API_TOKEN")
-print(f"Loaded API_TOKEN: {API_TOKEN}")  # Keep for terminal
+print(f"Loaded API_TOKEN: {API_TOKEN}")
 logger.info(f"Loaded API_TOKEN: {API_TOKEN}")
 
 def validate_extension(extension):
-    """Check if extension is numeric."""
     if not extension.isdigit():
         raise ValueError("Extension must be numeric (e.g., 1001).")
     logger.info(f"Validated extension: {extension}")
     return extension
 
 def validate_email(email):
-    """Basic email format validation."""
     email_pattern = re.compile(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
     if not email_pattern.match(email):
         raise ValueError("Invalid email format (e.g., user@domain.com).")
@@ -32,31 +30,25 @@ def validate_email(email):
     return email
 
 def validate_name(name, field_name):
-    """Check if name is non-empty."""
     if not name:
         raise ValueError(f"{field_name} cannot be empty.")
     logger.info(f"Validated {field_name.lower()}: {name}")
     return name
 
-def create_user(custID, domain):
-    """
-    Create a user in the NetSapiens API with input validation.
-    Args:
-        custID (str): Customer ID (e.g., 'sgdemo')
-        domain (str): Domain name (e.g., 'sgdemo')
-    """
+def create_user(custID, domain, api_url):
     while True:
         try:
             extension = validate_extension(input("Enter the user extension (ID): ").strip())
             first_name = validate_name(input("Enter the first name: ").strip(), "First name")
             last_name = validate_name(input("Enter the last name: ").strip(), "Last name")
             email = validate_email(input("Enter the email address: ").strip())
-            break  # Exit loop if all inputs are valid
+            break
         except ValueError as e:
-            print(f"Error: {e}. Please try again.")  # Keep for terminal
+            print(f"Error: {e}. Please try again.")
             logger.warning(f"Input validation error: {e}")
 
-    url = f"https://api.{custID}.ucaas.tech/ns-api/v2/domains/{domain}/users"
+    api_url = api_url.rstrip('/')
+    url = f"{api_url}/ns-api/v2/domains/{domain}/users"
     headers = {
         'accept': 'application/json',
         'content-type': 'application/json',
@@ -108,39 +100,48 @@ def create_user(custID, domain):
         "caller-id-name": f"{first_name} {last_name}"
     }
     
-    print(f"Calling API URL: {url}")  # Keep for terminal
+    print(f"Calling API URL: {url}")
     logger.info(f"Calling API URL: {url} to create user: {first_name} {last_name} (Ext: {extension})")
-    print(f"Request payload: {json.dumps(data, indent=2)}")  # Keep for terminal
+    print(f"Request payload: {json.dumps(data, indent=2)}")
     logger.debug(f"Request payload: {json.dumps(data, indent=2)}")
     
     try:
         response = requests.post(url, headers=headers, data=json.dumps(data))
         
-        print(f"Status Code: {response.status_code}")  # Keep for terminal
+        print(f"Status Code: {response.status_code}")
         logger.info(f"Status Code: {response.status_code} for user: {first_name} {last_name} (Ext: {extension})")
         
         if response.status_code in [200, 201, 202]:
-            print(f"User {first_name} {last_name} (Ext: {extension}) created successfully")  # Keep for terminal
+            print(f"User {first_name} {last_name} (Ext: {extension}) created successfully")
             logger.info(f"User '{first_name} {last_name}' (Ext: {extension}) created successfully with status code: {response.status_code}")
         else:
-            print(f"Failed to create user: {response.status_code}")  # Keep for terminal
-            print(response.text)  # Keep for terminal
+            print(f"Failed to create user: {response.status_code}")
+            print(response.text)
             logger.error(f"Failed to create user '{first_name} {last_name}' (Ext: {extension}): {response.status_code}")
             logger.debug(f"Response text: {response.text}")
     except requests.exceptions.RequestException as e:
-        print(f"Error calling {url}: {e}")  # Keep for terminal
+        print(f"Error calling {url}: {e}")
         logger.error(f"Error calling {url} to create user '{first_name} {last_name}' (Ext: {extension}): {e}")
 
 if __name__ == "__main__":
-    print("Starting user creation script")  # Keep for terminal
+    import re
+    print("Starting user creation script")
     logger.info("Starting user creation script")
     
     custID = input("Enter the customer domain (e.g., sgdemo): ").strip()
     domain = input("Enter the domain name (e.g., sgdemo): ").strip()
+    api_url = input("Enter the full API URL (e.g., https://api.example.ucaas.tech): ").strip()
+    
+    if not re.match(r"^https?://[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", api_url):
+        print("Invalid API URL. Please enter a valid URL (e.g., https://api.example.ucaas.tech).")
+        logger.error(f"Invalid API URL provided: {api_url}")
+        exit(1)
+    
     logger.info(f"Customer domain entered: {custID}")
     logger.info(f"Domain name entered: {domain}")
+    logger.info(f"API URL entered: {api_url}")
     
-    create_user(custID, domain)
+    create_user(custID, domain, api_url)
     
-    print("User creation script completed")  # Keep for terminal
+    print("User creation script completed")
     logger.info("User creation script completed")
