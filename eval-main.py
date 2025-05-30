@@ -21,6 +21,11 @@ if __name__ == "__main__":
     domain = input("Enter the domain name: ").strip()
     api_url = input("Enter the full API URL (e.g., https://api.example.ucaas.tech): ").strip()
     
+    # Prepend https:// if the URL doesn't start with http:// or https://
+    if not api_url.startswith(('http://', 'https://')):
+        api_url = f"https://{api_url}"
+        logger.info(f"Prepended https:// to API URL: {api_url}")
+    
     # Validate api_url
     if not re.match(r"^https?://[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", api_url):
         print("Invalid API URL. Please enter a valid URL (e.g., https://api.example.ucaas.tech).")
@@ -48,9 +53,11 @@ if __name__ == "__main__":
     
     image_url = input("Enter the image URL (or 'n' to skip): ").strip()
     if image_url.lower() != "n":
+        reseller_input = input("Enter the reseller value for image upload (or '*' for default): ").strip()
+        logger.info(f"Reseller value entered for image upload: {reseller_input}")
         print(f"Processing image URL: {image_url}")
         logger.info(f"Processing image URL: {image_url}")
-        process_images(image_url, custID, api_url=api_url)
+        process_images(image_url, custID, reseller=reseller_input, api_url=api_url)
     else:
         print("Skipping image processing")
         logger.info("Skipping image processing")

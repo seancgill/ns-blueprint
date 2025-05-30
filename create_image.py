@@ -17,8 +17,8 @@ if not API_TOKEN:
 print(f"Loaded API_TOKEN: {API_TOKEN}")
 logger.info(f"Loaded API_TOKEN: {API_TOKEN}")
 
-def create_image(custID, filename, file_path, reseller=None):
-    url = f"https://api.{custID}.ucaas.tech/ns-api/v2/images/{quote(filename, safe='')}"
+def create_image(custID, filename, file_path, api_url, reseller=None):
+    url = f"{api_url}/ns-api/v2/images/{quote(filename, safe='')}"
     headers = {
         "accept": "application/json",
         "Authorization": f"Bearer {API_TOKEN}"
@@ -53,7 +53,7 @@ def create_image(custID, filename, file_path, reseller=None):
         print(f"An error occurred while uploading {filename}: {traceback.format_exc()}")
         logger.error(f"An error occurred while uploading {filename}: {traceback.format_exc()}")
 
-def process_images(image_source, custID, reseller=None, local=False, exclude_filenames=None):
+def process_images(image_source, custID, api_url, reseller=None, local=False, exclude_filenames=None):
     output_directory = "image_files"
     filename_mapping = {
         "512PWA.png": "512x512.jpg",
@@ -111,7 +111,7 @@ def process_images(image_source, custID, reseller=None, local=False, exclude_fil
         file_path = os.path.join(output_directory, image_file)
         print(f"Uploading {filename} from {file_path}")
         logger.info(f"Uploading {filename} from {file_path}")
-        create_image(custID, filename, file_path, reseller)
+        create_image(custID, filename, file_path, api_url, reseller)
     
     return True  # Indicate success
 
@@ -119,7 +119,9 @@ if __name__ == "__main__":
     print("Starting image processing script")
     logger.info("Starting image processing script")
     custID = input("Enter the host ID (e.g., sgdemo): ").strip()
+    api_url = input("Enter the full API URL (e.g., https://api.example.ucaas.tech): ").strip()
     logger.info(f"Host ID entered: {custID}")
+    logger.info(f"API URL entered: {api_url}")
     
     if not custID:
         print("Host ID is required!")
@@ -134,11 +136,14 @@ if __name__ == "__main__":
                 logger.info("No URL provided, exiting")
                 break
             
+            reseller_input = input("Enter the reseller value for image upload (or '*' for default): ").strip()
+            logger.info(f"Reseller value entered for image upload: {reseller_input}")
+            
             success = False
             if image_url.startswith("file://"):
-                success = process_images(image_url[7:], custID, local=True)  # Strip 'file://' prefix
+                success = process_images(image_url[7:], custID, api_url, reseller=reseller_input, local=True)  # Strip 'file://' prefix
             else:
-                success = process_images(image_url, custID)
+                success = process_images(image_url, custID, api_url, reseller=reseller_input)
             
             if success:
                 print("Image processing completed successfully.")

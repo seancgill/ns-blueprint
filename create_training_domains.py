@@ -1,20 +1,22 @@
-import requests
-import json
 import os
+import requests
 import shutil
+import json
 import re
 from dotenv import load_dotenv
+from create_image import process_images
 from logging_setup import setup_logging
-from create_image import create_image, process_images
 
 # Initialize logger
 logger = setup_logging()
 
-# Load variables from the .env file into the environment
+# Load environment variables
 load_dotenv(override=True)
 
 # Retrieve the API token
 API_TOKEN = os.getenv("API_TOKEN")
+if not API_TOKEN:
+    raise ValueError("API_TOKEN is missing from the environment variables!")
 print(f"Loaded API_TOKEN: {API_TOKEN}")
 logger.info(f"Loaded API_TOKEN: {API_TOKEN}")
 
@@ -388,7 +390,6 @@ def create_training_domains(custID, api_url):
     ]
     description = "Training domain created via API"
     dial_policy = "US and Canada"
-
     call_parks = [
         {"callqueue": "701", "description": "Park One"},
         {"callqueue": "702", "description": "Park Two"},
@@ -427,7 +428,7 @@ def create_training_domains(custID, api_url):
             os.makedirs(image_dir)
             print(f"Cleared {image_dir} for {reseller_name}")
             logger.info(f"Cleared {image_dir} for {reseller_name}")
-        process_images(reseller_info["image_path"], custID, reseller_name, local=True, exclude_filenames=["192PWA.png", "512PWA.png"])
+        process_images(reseller_info["image_path"], custID, api_url, reseller=reseller_name, local=True, exclude_filenames=["192PWA.png", "512PWA.png"])
 
     print(f"\n=== Creating domain: {custID} with reseller: {custID}_reseller ===")
     logger.info(f"=== Creating domain: {custID} with reseller: {custID}_reseller ===")
@@ -469,7 +470,6 @@ def create_training_domains(custID, api_url):
                 add_agent_to_call_queue(custID, domain, queue["callqueue"], agent_extension, api_url)
 
 if __name__ == "__main__":
-    import re
     print("Starting training domains creation script")
     logger.info("Starting training domains creation script")
     custID = input("Enter the customer domain (e.g., sgdemo): ").strip()
